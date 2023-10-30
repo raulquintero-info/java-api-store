@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 
@@ -28,10 +27,9 @@ public class Brand {
 	}
 
 
-	public Brand(String brandname, List<Product> products) {
+	public Brand(String brandname) {
 		super();
 		this.brandname = brandname;
-		this.products = products;
 	}
 
 
@@ -56,7 +54,7 @@ public class Brand {
 
 
 	public List<Product> getProduct() {
-		return this.products;
+		return products;
 	}
 
 

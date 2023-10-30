@@ -25,10 +25,10 @@ public class Category {
 		super();
 	}
 
-	public Category( String name, List<Product> products) {
+	public Category( String name) {
 		super();
 		this.name = name;
-		this.products = products;
+		
 	}
 
 	

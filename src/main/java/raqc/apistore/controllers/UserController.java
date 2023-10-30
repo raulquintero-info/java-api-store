@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import raqc.apistore.dto.UsersDto;
+import raqc.apistore.dto.ProductDto;
+import raqc.apistore.dto.UserDto;
+import raqc.apistore.dto.RolDto;
 
 
 
@@ -20,9 +22,13 @@ public class UserController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/users")
 	@ResponseStatus(HttpStatus.OK)
-	public void consulta1(){
+	public List<UserDto> getAllUsers(){
 	
+		List<UserDto> usersDto = new ArrayList<UserDto>(); 
 		
+		usersDto.add(new UserDto((long) 1,"admin", "", new RolDto( "admin")));
+		usersDto.add(new UserDto((long) 2,"customer", "", new RolDto( "customer")));
 		
+		return usersDto;
 	}
 }

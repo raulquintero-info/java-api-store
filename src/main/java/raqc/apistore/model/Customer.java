@@ -19,13 +19,19 @@ public class Customer {
 	@JoinColumn(name = "human_id")
 	private Human human;
 	
+//
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="customertype_id")
+//	private CustomerType customerType;
+	
 	public Customer() {
 		super();
 	}
 
-	public Customer(Long id) {
+	public Customer(Long id, Human human) {
 		super();
 		this.id = id;
+		this.human = human;
 	}
 	
 	public Long getId() {
@@ -35,6 +41,22 @@ public class Customer {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Human getHuman() {
+		return human;
+	}
+
+	public void setHuman(Human human) {
+		this.human = human;
+	}
+
+//	public CustomerType getCustomerType() {
+//		return customerType;
+//	}
+//
+//	public void setCustomerType(CustomerType customerType) {
+//		this.customerType = customerType;
+//	}
 	
 	
 	

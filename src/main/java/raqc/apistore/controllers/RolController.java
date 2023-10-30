@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import raqc.apistore.dto.UsersDto;
+import raqc.apistore.dto.UserDto;
 
 
 

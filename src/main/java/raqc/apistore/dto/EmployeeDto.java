@@ -1,33 +1,24 @@
-package raqc.apistore.model;
+package raqc.apistore.dto;
 
 import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name="employees")
-public class Employee {
+
+public class EmployeeDto {
 
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String department;
 	
-	@OneToOne
-	@JoinColumn(name = "human_id")
-	private Human human;
+	private HumanDto human;
 
-	public Employee() {
+	public EmployeeDto() {
 		super();
 	}
 
-	public Employee(Long id, String department, Human human) {
+	public EmployeeDto( String department) {
 		super();
-		this.id = id;
 		this.department = department;
-		this.human = human;
 	}
 
 	public Long getId() {
@@ -48,11 +39,11 @@ public class Employee {
 		this.department = department;
 	}
 
-	public Human getHuman() {
+	public HumanDto getHuman() {
 		return human;
 	}
 
-	public void setHuman(Human human) {
+	public void setHumanHumaDto(HumanDto human) {
 		this.human = human;
 	}
 	
