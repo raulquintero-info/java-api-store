@@ -23,12 +23,7 @@ public class Employee {
 		super();
 	}
 
-	public Employee(Long id, String department, Human human) {
-		super();
-		this.id = id;
-		this.department = department;
-		this.human = human;
-	}
+	
 
 	public Long getId() {
 		return id;

@@ -3,13 +3,14 @@ package raqc.apistore.dto;
 import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
 
+import raqc.apistore.model.Human;
+
 
 public class CustomerDto {
 
 	private Long id;
 
-	private CustomerTypeDto customertype;
-	private HumanDto human;
+	private Human human;
 	
 	public CustomerDto() {
 		super();
@@ -28,20 +29,18 @@ public class CustomerDto {
 		this.id = id;
 	}
 
-	public CustomerTypeDto getCustomertype() {
-		return customertype;
-	}
 
-	public void setCustomertype(CustomerTypeDto customertype) {
-		this.customertype = customertype;
-	}
-
-	public HumanDto getHuman() {
+	public Human getHuman() {
 		return human;
 	}
 
-	public void setHuman(HumanDto human) {
+	public void setHuman(Human human) {
 		this.human = human;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerDto [id=" + id + ", human=" + human + "]";
 	}
 	
 	

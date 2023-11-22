@@ -1,16 +1,25 @@
 package raqc.apistore.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 
 @Entity
 @Table (name = "brands") 
-public class Brand {
+public class Brand implements Serializable{
 
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -19,6 +28,8 @@ public class Brand {
 	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "brand", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 	private List<Product> products;
 
 
@@ -53,14 +64,13 @@ public class Brand {
 	}
 
 
-	public List<Product> getProduct() {
-		return products;
-	}
 
 
-	public void setProduct(List<Product> products) {
-		this.products = products;
-	}
+
+
+
+
+
 	
 	
 	

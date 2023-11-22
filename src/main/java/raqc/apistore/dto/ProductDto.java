@@ -1,49 +1,57 @@
 package raqc.apistore.dto;
 
+import java.io.Serializable;
+
+import raqc.apistore.model.Brand;
+import raqc.apistore.model.Category;
+
 //import raqc.apistore.model.Category;
 
-public class ProductDto {
+public class ProductDto implements Serializable {
+	
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	private Long id;
-	private String model;
+	private String name;
 	private String description;
-	private Float  price;
+	private Double  price;
 	private Integer quantity;
 	private String image;
-	private Long brandId;
-	private String brand;
+	private Brand brand;
+	private Boolean isOffer;
+	private Double offerPrice;
+	private Category category;
 	
 	
 
-	public String getBrand() {
-		return brand;
-	}
+	
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public ProductDto(long id, String model, String description, float price, Integer quantity, String image, long brandId, String brand) {
+	public ProductDto( String name, String description, Double price, Integer quantity, String image, Brand brand, Category category) {
 		super();
-		this.id = id;
-		this.model = model;
+		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.quantity = quantity;
 		this.image = image;
-		this.brandId = brandId;
 		this.brand = brand;
+		this.category = category;
 		
 	}
 
 
-	public String getModel() {
-		return model;
+	public String getName() {
+		return name;
 	}
 
 
-	public void setModel(String model) {
-		this.model = model;
+	public void setName(String model) {
+		this.name = model;
 	}
 
 
@@ -57,12 +65,12 @@ public class ProductDto {
 	}
 
 
-	public Float getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
 
-	public void setPrice(Float price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -84,17 +92,6 @@ public class ProductDto {
 		this.id = id;
 	}
 
-	public Long getBrandId() {
-		return brandId;
-	}
-
-	public void setBrandId(Long brandId) {
-		this.brandId = brandId;
-	}
-	
-	public void setCategoryId(Long brandId) {
-		this.brandId = brandId;
-	}
 
 	public Integer getQuantity() {
 		return quantity;
@@ -105,7 +102,53 @@ public class ProductDto {
 	}
 
 	
+	public Brand getBrand() {
+		return brand;
+	}
 
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
+
+	
+	
+	public Boolean getIsOffer() {
+		return isOffer;
+	}
+
+
+	public void setIsOffer(Boolean isOffer) {
+		this.isOffer = isOffer;
+	}
+
+
+	public Double getOfferPrice() {
+		return offerPrice;
+	}
+
+
+	public void setOfferPrice(Double offerPrice) {
+		this.offerPrice = offerPrice;
+	}
+
+
+	public Category getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ProductDto [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", quantity=" + quantity + ", image=" + image + ", brand=" + brand + ", isOffer=" + isOffer
+				+ ", offerPrice=" + offerPrice + ", category=" + category + "]";
+	}
 	
 
 

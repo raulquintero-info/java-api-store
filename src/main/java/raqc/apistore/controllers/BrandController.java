@@ -1,9 +1,8 @@
 package raqc.apistore.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,42 +10,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import raqc.apistore.dto.RolDto;
-import raqc.apistore.model.Category;
-import raqc.apistore.model.Rol;
-import raqc.apistore.service.RoleService;
-
+import raqc.apistore.dto.BrandDto;
+import raqc.apistore.model.Brand;
+import raqc.apistore.service.BrandService;
 
 
 @RestController
 @RequestMapping("/api")
 
-public class RolController {
+public class BrandController {
 
 
 	@Autowired
-	private RoleService roleService;
+	private BrandService brandService;
 	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/roles")
+	@GetMapping("/marcas")
 	@ResponseStatus(HttpStatus.OK)
-	public  List<Rol> consulta(){
-	
-		return roleService.findAll();	
-
-	
+	public List< Brand > consulta(){
+		
+		
+	return brandService.findAll();	
+		
+				
 	}
 	
+	
+	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/roles/{id}")
+	@GetMapping("/marcas/{id}")
 	public ResponseEntity<?> consultaPorId(@PathVariable Long id){
 		
 		
-		Rol role = null;
+		Brand brand = null;
 		String response="";
 		
 		try {
-			role = roleService.findById(id);
+			brand = brandService.findById(id);
 			
 		}catch(DataAccessException e) {
 			response = "Error al realizar la consulta.";
@@ -54,28 +54,30 @@ public class RolController {
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(role==null) {
-			response ="El Rol con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
+		if(brand==null) {
+			response ="El clientecon el ID: ".concat(id.toString()).concat(" no existe en base de datos");
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Rol>(role, HttpStatus.OK);
+		return new ResponseEntity<Brand>(brand, HttpStatus.OK);
 		
 		
 	}
 	
+	
+	
 	@CrossOrigin
-	@DeleteMapping("/roles/{id}")
+	@DeleteMapping("/marcas/{id}")
 	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		try {
-			Rol productDelete = this.roleService.findById(id);
+			Brand productDelete = this.brandService.findById(id);
 			if(productDelete==null) {
-				response.put("mensaje", "Error al eliminar. Este producto ya no existe en base de datos");
+				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			roleService.delete(id);
+			brandService.delete(id);
 			
 		}catch(DataAccessException e) {
 			response.put("mensaje", "Error al eliminar en base de datos");
@@ -83,31 +85,30 @@ public class RolController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 			
-		response.put("mensaje", "Rol eliminado con exito");
+		response.put("mensaje", "Registro eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
 	
-	
 	@CrossOrigin
-	@PostMapping("/roles")
+	@PostMapping("/marcas")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> create(@RequestBody RolDto roleDto){
+	public ResponseEntity<?> create(@RequestBody BrandDto brandDto){
 		
-		Rol roleNew = null;
+		Brand brandNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			roleNew = this.roleService.create(roleDto);
+			brandNew = this.brandService.create(brandDto);
 			
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + roleNew.getId());
+			response.put("mensaje", "Error al tratar de actualizar el registo " + brandNew.getId());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
 		
 		
-		response.put("mensaje", "Roleo Grabado con exito, con el ID "+roleNew.getId() +" "  );
-		response.put("role", roleNew);
+		response.put("mensaje", "Registro Grabado con exito, con el ID "+brandNew.getId() +" "  );
+		response.put("brand", brandNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
@@ -115,29 +116,28 @@ public class RolController {
 	
 	
 	@CrossOrigin
-	@PutMapping("/roles")
+	@PutMapping("/marcas")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> update(@RequestBody RolDto roleDto){
+	public ResponseEntity<?> update(@RequestBody BrandDto brandDto){
 		
-		Rol roleNew = null;
+		Brand brandNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			roleNew = this.roleService.update(roleDto);
+			brandNew = this.brandService.update(brandDto);
 			
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + roleNew.getId());
+			response.put("mensaje", "Error al tratar de actualizar el registo " + brandNew.getId());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
 		
 		
-		response.put("mensaje", "Rol actualizado con exito, con el ID "+roleNew.getId() +" "  );
-		response.put("role", roleNew);
+		response.put("mensaje", "Brand actualizado con exito, con el ID "+brandNew.getId() +" "  );
+		response.put("brand", brandNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
 	
-
 
 
 	

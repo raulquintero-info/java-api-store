@@ -1,5 +1,6 @@
 package raqc.apistore.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +11,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "humans")
-public class Human {
+public class Human implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
@@ -26,14 +33,18 @@ public class Human {
 	private Integer postalcode;
 
 	
-	@OneToOne(mappedBy = "human")
-	private Customer customer;
-
-	@OneToOne(mappedBy = "human")
-	private Employee employee;
 	
-//	@OneToOne(mappedBy = "user")
-//	private User user;
+	@OneToOne(mappedBy = "human")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private Customer customer;
+//
+//	@OneToOne(mappedBy = "human")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//	private Employee employee;
+	
+	@OneToOne(mappedBy = "human")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private User user;
 	
 	
 	
@@ -134,5 +145,31 @@ public class Human {
 	public void setPostalcode(Integer postalcode) {
 		this.postalcode = postalcode;
 	}
+
+	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+//	public Customer getCustomer() {
+//		return customer;
+//	}
+
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+
+	@Override
+	public String toString() {
+		return "Human [Id=" + Id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + ", address1="
+				+ address1 + ", address2=" + address2 + ", city=" + city + ", country=" + "]";
+	}
+
+	
 
 }

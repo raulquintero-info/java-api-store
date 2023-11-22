@@ -17,12 +17,10 @@ public class Customer {
 
 	@OneToOne
 	@JoinColumn(name = "human_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 	private Human human;
 	
-//
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="customertype_id")
-//	private CustomerType customerType;
 	
 	public Customer() {
 		super();
@@ -50,14 +48,10 @@ public class Customer {
 		this.human = human;
 	}
 
-//	public CustomerType getCustomerType() {
-//		return customerType;
-//	}
-//
-//	public void setCustomerType(CustomerType customerType) {
-//		this.customerType = customerType;
-//	}
-	
-	
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", human=" + human + "]";
+	}
+
 	
 }

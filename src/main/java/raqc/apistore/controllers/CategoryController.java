@@ -1,9 +1,8 @@
 package raqc.apistore.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,42 +10,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import raqc.apistore.dto.RolDto;
+import raqc.apistore.dto.CategoryDto;
 import raqc.apistore.model.Category;
-import raqc.apistore.model.Rol;
-import raqc.apistore.service.RoleService;
-
+import raqc.apistore.service.CategoryService;
 
 
 @RestController
 @RequestMapping("/api")
 
-public class RolController {
+public class CategoryController {
 
 
 	@Autowired
-	private RoleService roleService;
+	private CategoryService categoryService;
+	
+	
 	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/roles")
+	@GetMapping("/admin/categorias")
 	@ResponseStatus(HttpStatus.OK)
-	public  List<Rol> consulta(){
-	
-		return roleService.findAll();	
-
-	
+	public List< Category > consulta(){
+		
+		
+	return categoryService.findAll();	
+		
+		
 	}
 	
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/roles/{id}")
+	@GetMapping("/categorias")
+	@ResponseStatus(HttpStatus.OK)
+	public List< Category > getCategoriesEnabled(){
+		
+	return categoryService.getCategoriesEnabled();	
+	
+	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/categorias/{id}")
 	public ResponseEntity<?> consultaPorId(@PathVariable Long id){
 		
 		
-		Rol role = null;
+		Category category = null;
 		String response="";
 		
 		try {
-			role = roleService.findById(id);
+			category = categoryService.findById(id);
 			
 		}catch(DataAccessException e) {
 			response = "Error al realizar la consulta.";
@@ -54,28 +64,30 @@ public class RolController {
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(role==null) {
-			response ="El Rol con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
+		if(category==null) {
+			response ="El registro con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Rol>(role, HttpStatus.OK);
+		return new ResponseEntity<Category>(category, HttpStatus.OK);
 		
 		
 	}
 	
+	
+	
 	@CrossOrigin
-	@DeleteMapping("/roles/{id}")
+	@DeleteMapping("/categorias/{id}")
 	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
 		try {
-			Rol productDelete = this.roleService.findById(id);
+			Category productDelete = this.categoryService.findById(id);
 			if(productDelete==null) {
-				response.put("mensaje", "Error al eliminar. Este producto ya no existe en base de datos");
+				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			roleService.delete(id);
+			categoryService.delete(id);
 			
 		}catch(DataAccessException e) {
 			response.put("mensaje", "Error al eliminar en base de datos");
@@ -83,31 +95,30 @@ public class RolController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 			
-		response.put("mensaje", "Rol eliminado con exito");
+		response.put("mensaje", "Registro eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
 	
-	
 	@CrossOrigin
-	@PostMapping("/roles")
+	@PostMapping("/categorias")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> create(@RequestBody RolDto roleDto){
+	public ResponseEntity<?> create(@RequestBody CategoryDto productDto){
 		
-		Rol roleNew = null;
+		Category categoryNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			roleNew = this.roleService.create(roleDto);
+			categoryNew = this.categoryService.create(productDto);
 			
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + roleNew.getId());
+			response.put("mensaje", "Error al tratar de actualizar el registo " + categoryNew.getId());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
 		
 		
-		response.put("mensaje", "Roleo Grabado con exito, con el ID "+roleNew.getId() +" "  );
-		response.put("role", roleNew);
+		response.put("mensaje", "Registro Grabado con exito, con el ID "+categoryNew.getId() +" "  );
+		response.put("category", categoryNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
@@ -115,30 +126,31 @@ public class RolController {
 	
 	
 	@CrossOrigin
-	@PutMapping("/roles")
+	@PutMapping("/categorias")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> update(@RequestBody RolDto roleDto){
+	public ResponseEntity<?> update(@RequestBody CategoryDto productDto){
 		
-		Rol roleNew = null;
+		Category categoryNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			roleNew = this.roleService.update(roleDto);
+			categoryNew = this.categoryService.update(productDto);
 			
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + roleNew.getId());
+			response.put("mensaje", "Error al tratar de actualizar el registo " + categoryNew.getId());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
 		
 		
-		response.put("mensaje", "Rol actualizado con exito, con el ID "+roleNew.getId() +" "  );
-		response.put("role", roleNew);
+		response.put("mensaje", "Registro actualizado con exito, con el ID "+categoryNew.getId() +" "  );
+		response.put("category", categoryNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
 	
 
-
-
+	
+	
+	
 	
 }

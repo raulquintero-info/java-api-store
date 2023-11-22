@@ -2,14 +2,19 @@ package raqc.apistore.model;
 
 
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="customertype")
-public class CustomerType {
+public class CustomerType implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

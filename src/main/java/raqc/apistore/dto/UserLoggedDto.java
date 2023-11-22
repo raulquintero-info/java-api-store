@@ -2,41 +2,60 @@ package raqc.apistore.dto;
 
 import java.io.Serializable;
 
+import raqc.apistore.model.Human;
+import raqc.apistore.model.Rol;
+
 public class UserLoggedDto implements Serializable {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	
-	private Integer id;
-	private String email;
+	private Long id;
+	private String username;
+	private String token;
+	private Rol rol;
 	private String name;
-	private String lastName;
-	private String role;
 	
 	
 	
-	public UserLoggedDto(Integer id, String email, String name, String lastName, String role) {
+	
+	public UserLoggedDto() {
+		super();
+	}
+	
+	public UserLoggedDto(Long id, String username, String token, Rol rol, String name) {
 		super();
 		this.id = id;
-		this.email = email;
+		this.username = username;
+		this.token = token;
+		this.rol = rol;
 		this.name = name;
-		this.lastName = lastName;
-		this.role = role;
 	}
-	public Integer getId() {
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public Rol getRol() {
+		return rol;
+	}
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 	public String getName() {
 		return name;
@@ -44,17 +63,10 @@ public class UserLoggedDto implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
+	@Override
+	public String toString() {
+		return "UserLoggedDto [id=" + id + ", username=" + username + ", token=" + token + ", rol=" + rol + ", name="
+				+ name + "]";
 	}
 	
 	

@@ -20,10 +20,9 @@ public class BrandDto {
 	}
 
 
-	public BrandDto(String brandname, List<ProductDto> products) {
+	public BrandDto(String brandname) {
 		super();
 		this.brandname = brandname;
-		this.products = products;
 	}
 
 

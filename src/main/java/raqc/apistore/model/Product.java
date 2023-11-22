@@ -21,14 +21,20 @@ public class Product {
 	private String image;
 	private Double price;
 	private Integer quantity;
+	private Boolean isOffer;
+	private Double offerPrice;
+	
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="brand_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Brand brand;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="category_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 	private Category category;
 	
 	
@@ -119,6 +125,33 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+	
+	
+
+	public Boolean getIsOffer() {
+		return isOffer;
+	}
+
+
+
+	public void setIsOffer(Boolean isOffer) {
+		this.isOffer = isOffer;
+	}
+	
+
+
+
+	public Double getOfferPrice() {
+		return offerPrice;
+	}
+
+
+
+	public void setOfferPrice(Double offerPrice) {
+		this.offerPrice = offerPrice;
+	}
+
+
 
 	public List<OrderProducts> getOrderproducts() {
 		return orderproducts;
@@ -126,6 +159,15 @@ public class Product {
 
 	public void setOrderproducts(List<OrderProducts> orderproducts) {
 		this.orderproducts = orderproducts;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price="
+				+ price + ", quantity=" + quantity + ", isOffer=" + isOffer + ", offerPrice=" + offerPrice + ", brand="
+				+ brand + ", category=" + category + ", orderproducts=" + orderproducts + "]";
 	}
 
 

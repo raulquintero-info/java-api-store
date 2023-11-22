@@ -3,6 +3,8 @@ package raqc.apistore.dto;
 import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
 
+import raqc.apistore.model.Human;
+
 
 public class EmployeeDto {
 
@@ -10,16 +12,13 @@ public class EmployeeDto {
 	private Long id;
 	private String department;
 	
-	private HumanDto human;
+	private Human human;
 
 	public EmployeeDto() {
 		super();
 	}
 
-	public EmployeeDto( String department) {
-		super();
-		this.department = department;
-	}
+
 
 	public Long getId() {
 		return id;
@@ -39,11 +38,11 @@ public class EmployeeDto {
 		this.department = department;
 	}
 
-	public HumanDto getHuman() {
+	public Human getHuman() {
 		return human;
 	}
 
-	public void setHumanHumaDto(HumanDto human) {
+	public void setHumanHumaDto(Human human) {
 		this.human = human;
 	}
 	

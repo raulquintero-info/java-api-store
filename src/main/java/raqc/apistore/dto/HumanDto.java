@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import raqc.apistore.model.Customer;
+import raqc.apistore.model.Employee;
+import raqc.apistore.model.User;
+
 
 public class HumanDto {
 
@@ -21,11 +25,13 @@ public class HumanDto {
 	private Integer postalcode;
 
 	
-	private CustomerDto customer;
-
-
-	private EmployeeDto employee;
+//	private Customer customer;
+//
+//
+//	private Employee employee;
 	
+	private User user;
+
 //	@OneToOne(mappedBy = "user")
 //	private User user;
 	
@@ -36,7 +42,7 @@ public class HumanDto {
 	}
 
 	public HumanDto(String name, String lastname, String email, String address1, String address2, String city,
-			String country, String telephone, Integer postalcode,CustomerDto customer, EmployeeDto employee) {
+			String country, String telephone, Integer postalcode,Customer customer, Employee employee, User user) {
 		super();
 		this.name = name;
 		this.lastname = lastname;
@@ -47,8 +53,9 @@ public class HumanDto {
 		this.country = country;
 		this.telephone = telephone;
 		this.postalcode = postalcode;
-		this.customer = customer;
-		this.employee = employee;
+//		this.customer = customer;
+//		this.employee = employee;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -131,20 +138,35 @@ public class HumanDto {
 		this.postalcode = postalcode;
 	}
 
-	public CustomerDto getCustomer() {
-		return customer;
+//	public Customer getCustomer() {
+//		return customer;
+//	}
+//
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+//
+//	public Employee getEmployee() {
+//		return employee;
+//	}
+//
+//	public void setEmployee(Employee employee) {
+//		this.employee = employee;
+//	}
+
+	public User getUser() {
+		return user;
 	}
 
-	public void setCustomer(CustomerDto customer) {
-		this.customer = customer;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public EmployeeDto getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(EmployeeDto employee) {
-		this.employee = employee;
+	@Override
+	public String toString() {
+		return "HumanDto [Id=" + Id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + ", address1="
+				+ address1 + ", address2=" + address2 + ", city=" + city + ", country=" + country + ", telephone="
+				+ telephone + ", postalcode=" + postalcode + ", user=" + user + "]";
 	}
 
 	
