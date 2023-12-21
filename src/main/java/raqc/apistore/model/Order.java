@@ -21,14 +21,22 @@ public class Order {
 	private String city;
 	private String country;
 	private Double total;
-	
+	private boolean pickup;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="orderstatus_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private OrderStatus orderstatus;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderProducts> orderproducts;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="")
+	private Customer customer;
+	
+	
+
 
 	public Order() {
 		super();
@@ -120,7 +128,21 @@ public class Order {
 	}
 	
 	
-	
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public boolean getPickup() {
+		return pickup;
+	}
+
+	public void setPickup(boolean pickup) {
+		this.pickup = pickup;
+	}
 	
 	
 	

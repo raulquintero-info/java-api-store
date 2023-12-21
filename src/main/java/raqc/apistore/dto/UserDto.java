@@ -1,6 +1,9 @@
 package raqc.apistore.dto;
 
+import java.util.List;
+
 import raqc.apistore.model.Human;
+import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 
 
@@ -13,7 +16,9 @@ public class UserDto {
 	private String token;
 	private Boolean isLogged;
 	private Human human;
+
 	
+
 	public UserDto() {
 		super();
 	}
@@ -98,6 +103,15 @@ public class UserDto {
 	}
 	
 	
-	
+
+
+
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", username=" + username + ", password=" + password + ", rol=" + rol + ", token="
+				+ token + ", isLogged=" + isLogged + ", human=" + human + "]";
+	}
+
+
 	
 }

@@ -115,7 +115,7 @@ public class CustomerController {
 			userNew = customerNew.getHuman().getUser();
 			userNew.setRol(rolNew);
 			userNew.setHuman(humanNew);
-			userService.update(userNew);
+			userService.create(userNew);
 			System.out.println("userNew:>>>>>>" + userNew);
 
 

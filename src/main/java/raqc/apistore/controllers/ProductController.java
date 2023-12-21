@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import raqc.apistore.model.Brand;
 import raqc.apistore.model.Category;
+import raqc.apistore.model.Favorite;
+import raqc.apistore.dto.FavoriteDto;
 import raqc.apistore.dto.ProductDatatableDto;
 import raqc.apistore.dto.ProductDto;
 import raqc.apistore.model.Product;
@@ -43,13 +45,11 @@ public class ProductController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/productos")
-	
 	@ResponseStatus(HttpStatus.OK)
-	public List<Product> consulta(){
-		
-		
-		
+	public List<Product> consulta(@RequestParam (required=false, defaultValue = "0" ) Integer categoryid , @RequestParam (required=false,  defaultValue= "0") String page){
+		System.out.println(categoryid + page);
 		return productService.findAll();
+//		return productService.findAllProducts(categoryid, page);
 		
 	}
 	
@@ -122,16 +122,16 @@ public class ProductController {
 	}
 //=====================================
 	
-	
+	// marcar favoritos por categoria y usuario
 	@CrossOrigin
-	@GetMapping("/productos/categoria/{id}")
-	public ResponseEntity<?> getByCategoryId(@PathVariable Long id){
+	@GetMapping("/productos/categoria/{id}/usuario/{userId}")
+	public ResponseEntity<?> getByCategoryId(@PathVariable Long id, @PathVariable Long userId){
 	
 		List<Product> products = null;
 		String response="";
 		
 		try {
-			products = productService.getByCategoryId(id);
+			products = productService.getByCategoryId(id, userId);
 			
 		}catch(DataAccessException e) {
 			response = "Error al realizar la consulta.";
@@ -147,6 +147,32 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		
 	}
+	
+//	@CrossOrigin
+//	@GetMapping("/productos/categoria/{categoryId}/usuario/{userId}")
+//	public ResponseEntity<?> getByCategoryIdUserId(@PathVariable Long categoryId, @PathVariable Long userId){
+//	
+//		List<Product> products = null;
+//		String response="";
+//		
+//		try {
+//			products = productService.getByCategoryId(categoryId,userId);
+//			
+//		}catch(DataAccessException e) {
+//			response = "Error al realizar la consulta.";
+//			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
+//			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		if(products==null) {
+//			response ="El clientecon el ID: ".concat(categoryId.toString()).concat(" no existe en base de datos");
+//			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
+//		}
+//		
+//		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+//		
+//	}
+	
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/productos/{id}")
@@ -178,6 +204,65 @@ public class ProductController {
 		return new ResponseEntity<Product>(producto, HttpStatus.OK);
 			
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@GetMapping("/productos-favorito/{productId}/usuario/{userId}")
+	public ResponseEntity<?> consultaFavoritoPorUsuarioId(@PathVariable Long productId, @PathVariable Long userId){
+		
+		
+		Product producto = null;
+		String response="";
+		System.out.println("error aqui");
+		try {
+			producto = productService.findFavoriteByUserId(productId, userId);
+			System.out.println("error aqui 2");
+
+		}catch(DataAccessException e) {
+			response = "Error al realizar la consulta.";
+			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
+			System.out.println("error aqui 3");
+
+			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		
+
+		if(producto==null) {
+			response ="El cliente con el ID: ".concat(productId.toString()).concat(" no existe en base de datos");
+			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Product>(producto, HttpStatus.OK);
+			
+	}
+	
+	
+	
+//	@CrossOrigin
+//	@GetMapping("/productos/favoritos/{id}")
+//	public ResponseEntity<?> getFavoritesByUserId(@PathVariable Long id){
+//	
+//		List<Product> favorites = null;
+//		String response="";
+//		
+//		try {
+//			favorites = productService.getByCategoryId(id);
+//			favorites = productService.getFavoritesByUserId(id);
+//			
+//		}catch(DataAccessException e) {
+//			response = "Error al realizar la consulta.";
+//			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
+//			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		if(favorites==null) {
+//			response ="El clientecon el ID: ".concat(id.toString()).concat(" no existe en base de datos");
+//			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
+//		}
+//		
+//		return new ResponseEntity<List<Product>>(favorites, HttpStatus.OK);
+//		
+//	}
 	
 	@CrossOrigin
 	@DeleteMapping("/productos/{id}")

@@ -2,6 +2,8 @@ package raqc.apistore.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -33,7 +35,13 @@ public class User implements Serializable {
 	@JoinColumn(name = "human_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Human human;
+	
+	
+	
+	
 
+//	@OneToMany(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)
+//	private List<User> user;
 	
 	public User() {
 		super();
@@ -95,22 +103,25 @@ public class User implements Serializable {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", token=" + token
-				+ ", isLogged=" + isLogged + ", rol=" + rol + ", human=" + human + "]";
+	
+	
+	
+public void setHuman(Human human) {
+		this.human = human;
 	}
-
 
 
 //	public Human getHuman() {
 //		return human;
 //	}
 
-	public void setHuman(Human human) {
-		this.human = human;
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", token=" + token
+				+ ", isLogged=" + isLogged + ", rol=" + rol + ", human=" + human  + "]";
 	}
+
+	
 
 	
 	

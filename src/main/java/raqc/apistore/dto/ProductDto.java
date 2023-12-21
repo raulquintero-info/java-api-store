@@ -1,9 +1,11 @@
 package raqc.apistore.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import raqc.apistore.model.Brand;
 import raqc.apistore.model.Category;
+import raqc.apistore.model.User;
 
 //import raqc.apistore.model.Category;
 
@@ -27,7 +29,7 @@ public class ProductDto implements Serializable {
 	private Boolean isOffer;
 	private Double offerPrice;
 	private Category category;
-	
+	private List<User> users;
 	
 
 	
@@ -140,6 +142,17 @@ public class ProductDto implements Serializable {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 

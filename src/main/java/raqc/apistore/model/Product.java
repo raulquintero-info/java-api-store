@@ -22,6 +22,7 @@ public class Product {
 	private Double price;
 	private Integer quantity;
 	private Boolean isOffer;
+	private Long isFavorite;
 	private Double offerPrice;
 	
 	
@@ -41,6 +42,9 @@ public class Product {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="product", cascade = CascadeType.ALL)
 	private List<OrderProducts> orderproducts;
 
+
+	
+	
 	public Product() {
 		super();
 	}
@@ -141,6 +145,10 @@ public class Product {
 
 
 
+
+
+
+
 	public Double getOfferPrice() {
 		return offerPrice;
 	}
@@ -153,9 +161,9 @@ public class Product {
 
 
 
-	public List<OrderProducts> getOrderproducts() {
-		return orderproducts;
-	}
+//	public List<OrderProducts> getOrderproducts() {
+//		return orderproducts;
+//	}
 
 	public void setOrderproducts(List<OrderProducts> orderproducts) {
 		this.orderproducts = orderproducts;

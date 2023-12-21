@@ -12,11 +12,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import raqc.apistore.dto.BrandDto;
 import raqc.apistore.dto.CategoryDto;
 import raqc.apistore.dto.CustomerDto;
 import raqc.apistore.dto.RolDto;
 import raqc.apistore.dto.UserDto;
 import raqc.apistore.dto.UserLoggedDto;
+import raqc.apistore.model.Brand;
 import raqc.apistore.model.Category;
 import raqc.apistore.model.Customer;
 import raqc.apistore.model.Human;
@@ -73,21 +75,26 @@ public class UserService {
 	}
 
 	@Transactional
-	public User update(User UserEntity) {
+	public User update(UserDto userDto) {
 		
-//		Category productEntity = categoryRepository.findById(categoryDto.getId())
-//				.orElseThrow(()-> new NoSuchElementException("Categoria no encontrado con el id: " + categoryDto.getId()));
+		User userEntity = userRepository.findById(userDto.getId())
+				.orElseThrow(()-> new NoSuchElementException("Categoria no encontrado con el id: " + userDto.getId()));
 		
-//		productEntity.setId(categoryDto.getId());
-//		productEntity.setName(categoryDto.getName());
-//		productEntity.setPosition(categoryDto.getPosition());
-//		productEntity.setQuantity(categoryDto.getQuantity());
-//		productEntity.setIsEnabled(categoryDto.getIsEnabled());
+//		userEntity.setId(userDto.getId());
+		userEntity.setUsername(userDto.getUsername());
+		if(userDto.getToken() != "") userEntity.setToken(userDto.getToken());
+		if(userDto.getPassword() != "") userEntity.setPassword(userDto.getPassword());
+		if(userDto.getRol().getId() >= 0) userEntity.setRol(userDto.getRol());
 		
-		return userRepository.save(UserEntity);
+		return userRepository.save(userEntity);
 		
 		
 	}
+	
+	
+	
+	
+	
 	@Transactional
 	public User validateToken(String token) {
 		

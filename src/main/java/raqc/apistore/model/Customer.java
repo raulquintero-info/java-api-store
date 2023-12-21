@@ -1,6 +1,8 @@
 package raqc.apistore.model;
 
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -18,9 +20,11 @@ public class Customer {
 	@OneToOne
 	@JoinColumn(name = "human_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 	private Human human;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<Order> orders;
+
 	
 	public Customer() {
 		super();

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import raqc.apistore.dto.UserLoggedDto;
 import raqc.apistore.model.User;
@@ -24,7 +25,10 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 
 	
 	
-	@Query(value = "SELECT h.id FROM humans as h LEFT JOIN users as u ON h.id = u.human_id WHERE u.id = '1'", nativeQuery = true)
-	User findHumanByUserId(Long id);
+//	@Query(value = "SELECT * FROM users,humans WHERE humans.id=users.human_id AND users.id = '1'", nativeQuery = true)
+	//Error - NonUniqueDiscoveredSqlAliasException: Encountered a duplicated sql alias [id] during auto-discovery of a native-sql query
+	
+	@Query(value = "SELECT * FROM users WHERE  users.id = :id", nativeQuery = true)
+	User findHumanByUserId(@PathVariable("id") Long id);
 	
 }
