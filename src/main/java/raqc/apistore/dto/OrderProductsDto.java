@@ -72,6 +72,15 @@ public class OrderProductsDto {
 	public void setProduct(ProductDto product) {
 		this.product = product;
 	}
+
+	@Override
+	public String toString() {
+		return "OrderProductsDto [id=" + id + ", quantity=" + quantity + ", price=" + price + ", order=" + order
+				+ ", product=" + product + "]";
+	}
+	
+	
+	
 	
 	
 	

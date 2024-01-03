@@ -17,11 +17,15 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String username;
 	private String password;
+	private String name;
+	private String lastname;
+	private String phone;
 	private String token;
 	private Boolean isLogged;
 	
@@ -31,18 +35,14 @@ public class User implements Serializable {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Rol rol;
 	
-	@OneToOne
-	@JoinColumn(name = "human_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Human human;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private List<Order> orders;
 	
 	
 	
 
-//	@OneToMany(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)
-//	private List<User> user;
-	
 	public User() {
 		super();
 	}
@@ -79,6 +79,31 @@ public class User implements Serializable {
 
 	
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public String getToken() {
 		return token;
 	}
@@ -105,21 +130,24 @@ public class User implements Serializable {
 	}
 	
 	
-	
-public void setHuman(Human human) {
-		this.human = human;
-	}
 
 
-//	public Human getHuman() {
-//		return human;
+//	public List<Order> getOrders() {
+//		return orders;
 //	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", token=" + token
-				+ ", isLogged=" + isLogged + ", rol=" + rol + ", human=" + human  + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", lastname="
+				+ lastname + ", phone=" + phone + ", token=" + token + ", isLogged=" + isLogged + ", rol=" + rol
+				+ ", orders=" + orders + "]";
 	}
+
+	
 
 	
 

@@ -19,11 +19,8 @@ import raqc.apistore.dto.UserDto;
 import raqc.apistore.dto.UserLoggedDto;
 import raqc.apistore.model.User;
 import raqc.apistore.model.Brand;
-import raqc.apistore.model.Human;
 import raqc.apistore.model.Rol;
 import raqc.apistore.service.UserService;
-import raqc.apistore.service.HumanService;
-
 
 
 @RestController
@@ -35,8 +32,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private HumanService humanService;
+	
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/usuarios")
@@ -86,7 +82,7 @@ public class UserController {
 		
 		try {
 			
-			user = userService.findHumanByUserId(id);
+			user = userService.findById(id);
 			if(user!=null) {
 			userDto.setId(user.getId());
 			userDto.setUsername(user.getUsername());

@@ -17,9 +17,12 @@ public class OrderStatus {
 	private Long Id;
 	
 	private String name;
+	private String dotColor;
+	private String bgColor;
 
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderstatus", cascade = CascadeType.ALL)
+	
 	private List<Order> orders;
 
 
@@ -28,10 +31,11 @@ public class OrderStatus {
 	}
 
 
-	public OrderStatus(String name, List<Order> orders) {
+	public OrderStatus(Long id, String name) {
 		super();
+		this.Id = id;
 		this.name = name;
-		this.orders = orders;
+		
 	}
 
 
@@ -55,10 +59,29 @@ public class OrderStatus {
 	}
 
 
-	public List<Order> getOrders() {
-		return this.orders;
+	public String getDotColor() {
+		return dotColor;
 	}
 
+
+	public void setDotColor(String dotColor) {
+		this.dotColor = dotColor;
+	}
+
+
+	public String getBgColor() {
+		return bgColor;
+	}
+
+
+	public void setBgColor(String bgColor) {
+		this.bgColor = bgColor;
+	}
+
+	
+//	public List<Order> getOrders() {
+//	return this.orders;
+//}
 
 	public void SetOrders(List<Order> orders) {
 		this.orders = orders;

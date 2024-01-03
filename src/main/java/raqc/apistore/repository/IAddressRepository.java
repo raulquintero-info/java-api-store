@@ -8,14 +8,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 
 import raqc.apistore.model.Address;
-import raqc.apistore.model.Order;
 
 
-public interface IOrderRepository extends JpaRepository<Order, Long>{
+public interface IAddressRepository extends JpaRepository<Address, Long>{
 	
-	@Query(value = "SELECT * From orders where user_id = ?1", nativeQuery = true)
-	List<Order> findAllByUserId(Long userId);
+	@Query(value = "SELECT * From addresses where user_id = ?1", nativeQuery = true)
+	List<Address> findByUserId(Long userId);
 
+	
 	
 	
 	

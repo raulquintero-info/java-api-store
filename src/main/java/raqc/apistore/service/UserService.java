@@ -20,8 +20,7 @@ import raqc.apistore.dto.UserDto;
 import raqc.apistore.dto.UserLoggedDto;
 import raqc.apistore.model.Brand;
 import raqc.apistore.model.Category;
-import raqc.apistore.model.Customer;
-import raqc.apistore.model.Human;
+
 import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 import raqc.apistore.model.User;
@@ -40,6 +39,16 @@ public class UserService {
 	public List<User> findAll(){
 		return (List<User>)userRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
 	}
+	
+
+	public List<User> findAllCustomers(){
+		return (List<User>)userRepository.findAllCustomers();
+	}
+	
+	public List<User> findAllEmployees(){
+		return (List<User>)userRepository.findAllEmployees();
+	}
+	
 	
 	@Transactional(readOnly=true)
 	public  User findById(Long id) {
@@ -80,7 +89,7 @@ public class UserService {
 		User userEntity = userRepository.findById(userDto.getId())
 				.orElseThrow(()-> new NoSuchElementException("Categoria no encontrado con el id: " + userDto.getId()));
 		
-//		userEntity.setId(userDto.getId());
+//		userEntity.setId(userDto.getId())
 		userEntity.setUsername(userDto.getUsername());
 		if(userDto.getToken() != "") userEntity.setToken(userDto.getToken());
 		if(userDto.getPassword() != "") userEntity.setPassword(userDto.getPassword());
@@ -110,11 +119,7 @@ public class UserService {
 		return userRepository.save(user);	
 	}
 	
-	@Transactional
-	public User findHumanByUserId(Long id) {
-		
-		return userRepository.findHumanByUserId(id);	
-	}
+
 	
 	
 	

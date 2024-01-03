@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import raqc.apistore.dto.EmployeeDto;
-import raqc.apistore.model.Employee;
-import raqc.apistore.service.EmployeeService;
+import raqc.apistore.model.User;
+import raqc.apistore.service.UserService;
 
 
 @RestController
@@ -21,16 +21,15 @@ import raqc.apistore.service.EmployeeService;
 
 public class EmployeeController {
 
-
 	@Autowired
-	private EmployeeService employeeService;
+	private UserService userService;
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/empleados")
 	@ResponseStatus(HttpStatus.OK)
-	public List< Employee > consulta(){
+	public List< User > consulta(){
 		
-	return employeeService.findAll();	
+	return userService.findAllEmployees();	
 		
 	}
 	
@@ -42,32 +41,32 @@ public class EmployeeController {
 	public ResponseEntity<?> consultaPorId(@PathVariable Long id){
 		
 		
-		Employee customer = null;
-		String response="";
-		System.out.println("error aqui");
-		
-		try {
-			System.out.println("error aqui 2: " + id);
-
-			customer = employeeService.findById(id);
-
-		}catch(DataAccessException e) {
-			response = "Error al realizar la consulta.";
-			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
-			System.out.println("error aqui 3");
-
-			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			
-		}
-		
-
-		if(customer==null) {
-			
-			response ="El Registro con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
-			System.out.println(response);
-			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Employee>(customer, HttpStatus.OK);
+		User customer = null;
+//		String response="";
+//		System.out.println("error aqui");
+//		
+//		try {
+//			System.out.println("error aqui 2: " + id);
+//
+//			customer = employeeService.findById(id);
+//
+//		}catch(DataAccessException e) {
+//			response = "Error al realizar la consulta.";
+//			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
+//			System.out.println("error aqui 3");
+//
+//			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//			
+//		}
+//		
+//
+//		if(customer==null) {
+//			
+//			response ="El Registro con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
+//			System.out.println(response);
+//			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
+//		}
+		return new ResponseEntity<User>(customer, HttpStatus.OK);
 			
 	}
 	
@@ -76,21 +75,21 @@ public class EmployeeController {
 	@PostMapping("/empleados")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> create(@RequestBody EmployeeDto customerDto){
-		
-		Employee employeeNew = new Employee();
+//		
+		User employeeNew = new User();
 //		employeeNew.setId(0L);
 		Map<String, Object> response = new HashMap<>();
-		try {
-			employeeNew = this.employeeService.create(customerDto);
-			
-		}catch(DataAccessException e) {
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + employeeNew.getId());
-			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
-		}
-		
-		
-		response.put("mensaje", "REgistro Grabado con exito, con el ID " + employeeNew.getId() +" "  );
+//		try {
+//			employeeNew = this.employeeService.create(customerDto);
+//			
+//		}catch(DataAccessException e) {
+//			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
+//			response.put("mensaje", "Error al tratar de actualizar el registo " + employeeNew.getId());
+//			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		
+//		response.put("mensaje", "REgistro Grabado con exito, con el ID " + employeeNew.getId() +" "  );
 		response.put("employee", employeeNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
@@ -103,19 +102,19 @@ public class EmployeeController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> update(@RequestBody EmployeeDto customerDto){
 		
-		Employee employeeNew = null;
+		User employeeNew = null;
 		Map<String, Object> response = new HashMap<>();
-		try {
-			employeeNew = this.employeeService.update(customerDto);
-			
-		}catch(DataAccessException e) {
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("mensaje", "Error al tratar de actualizar el registo " + employeeNew.getId());
-			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
-		}
-		
-		
-		response.put("mensaje", "Registro actualizado con exito, con el ID "+employeeNew.getId() +" "  );
+//		try {
+//			employeeNew = this.employeeService.update(customerDto);
+//			
+//		}catch(DataAccessException e) {
+//			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
+//			response.put("mensaje", "Error al tratar de actualizar el registo " + employeeNew.getId());
+//			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		
+//		response.put("mensaje", "Registro actualizado con exito, con el ID "+employeeNew.getId() +" "  );
 		response.put("employee", employeeNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		

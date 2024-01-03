@@ -184,7 +184,7 @@ public class ProductController {
 		System.out.println("error aqui");
 		try {
 			producto = productService.findById(id);
-			System.out.println("error aqui 2");
+			System.out.println("obteniendo producto id:  " + id);
 
 		}catch(DataAccessException e) {
 			response = "Error al realizar la consulta.";
@@ -212,10 +212,9 @@ public class ProductController {
 		
 		Product producto = null;
 		String response="";
-		System.out.println("error aqui");
 		try {
 			producto = productService.findFavoriteByUserId(productId, userId);
-			System.out.println("error aqui 2");
+			System.out.println("obteniedo favoritos");
 
 		}catch(DataAccessException e) {
 			response = "Error al realizar la consulta.";

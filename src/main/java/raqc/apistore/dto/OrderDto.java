@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
+import raqc.apistore.model.User;
+
 
 
 public class OrderDto {
@@ -16,7 +18,9 @@ public class OrderDto {
 	private String city;
 	private String country;
 	private Double total;
-	
+	private boolean pickup;
+
+	private User user;
 	
 	private OrderStatusDto orderstatus;
 	
@@ -27,7 +31,7 @@ public class OrderDto {
 	}
 
 	public OrderDto(Date date, String address1, String address2, String city, String country, Double total,
-			OrderStatusDto orderstatus) {
+			OrderStatusDto orderstatus, List<OrderProductsDto> orderproducts) {
 		super();
 		this.date = date;
 		this.address1 = address1;
@@ -45,6 +49,15 @@ public class OrderDto {
 
 	public void setId(Long id) {
 		Id = id;
+	}
+
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getDate() {
@@ -109,6 +122,23 @@ public class OrderDto {
 
 	public void setOrderproducts(List<OrderProductsDto> orderproducts) {
 		this.orderproducts = orderproducts;
+	}
+	
+	
+
+	public boolean isPickup() {
+		return pickup;
+	}
+
+	public void setPickup(boolean pickup) {
+		this.pickup = pickup;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderDto [Id=" + Id + ", date=" + date + ", address1=" + address1 + ", address2=" + address2 + ", city="
+				+ city + ", country=" + country + ", total=" + total + ", orderstatus=" + orderstatus
+				+ ", orderproducts=" + orderproducts + "]";
 	}
 	
 	

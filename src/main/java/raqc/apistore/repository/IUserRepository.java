@@ -2,6 +2,8 @@ package raqc.apistore.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +15,12 @@ import raqc.apistore.model.User;
 
 public interface IUserRepository extends JpaRepository<User, Long>{
 	
+	
+	@Query(value = "select users.* from users, roles WHERE  roles.id = users.rol_id AND roles.id = 2 ORDER BY users.id ASC", nativeQuery = true)
+	List<User> findAllCustomers();
+	
+	@Query(value = "select users.* from users, roles WHERE  roles.id = users.rol_id AND roles.id = 1 ORDER BY users.id ASC", nativeQuery = true)
+	List<User> findAllEmployees();
 	
 	@Query(value = "select * from users where username = ?1", nativeQuery = true)
 	User findByUserName(String username);
@@ -29,6 +37,6 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	//Error - NonUniqueDiscoveredSqlAliasException: Encountered a duplicated sql alias [id] during auto-discovery of a native-sql query
 	
 	@Query(value = "SELECT * FROM users WHERE  users.id = :id", nativeQuery = true)
-	User findHumanByUserId(@PathVariable("id") Long id);
+	User findByUserId(@PathVariable("id") Long id);
 	
 }

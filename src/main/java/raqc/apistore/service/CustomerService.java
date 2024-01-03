@@ -12,13 +12,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import raqc.apistore.dto.BrandDto;
+import raqc.apistore.dto.CategoryDto;
 import raqc.apistore.dto.CustomerDto;
-import raqc.apistore.model.Customer;
-import raqc.apistore.model.Human;
+import raqc.apistore.dto.RolDto;
+import raqc.apistore.dto.UserDto;
+import raqc.apistore.dto.UserLoggedDto;
+import raqc.apistore.model.Brand;
+import raqc.apistore.model.Category;
+
+import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 import raqc.apistore.model.User;
-import raqc.apistore.repository.ICustomerRepository;
-import raqc.apistore.repository.IHumanRepository;
 import raqc.apistore.repository.IUserRepository;
 
 
@@ -28,70 +33,101 @@ import raqc.apistore.repository.IUserRepository;
 public class CustomerService {
 
 	@Autowired
-	private ICustomerRepository customerRepository;
-	
-	@Autowired IHumanRepository humanRepository;
-	@Autowired IUserRepository userRepository;
+	private IUserRepository userRepository;
 	
 	@Transactional(readOnly = true)
-	public List<Customer> findAll(){
-		return (List<Customer>)customerRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+	public List<User> findAll(){
+		return (List<User>)userRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
 	}
 	
-	
-	
-	
-	
-	
-	
-	public Customer create(CustomerDto customer) {
-	
-		Customer customerEntity = new Customer();
-		Human humanEntity = customer.getHuman();
-		User userEntity = new User();
-		Rol rolEntity = new Rol();
-		
-		rolEntity.setId(1L);
-		userEntity.setRol(rolEntity);
-		userEntity.setUsername(humanEntity.getEmail());
-		userEntity = userRepository.save(userEntity);
-		System.out.println(userEntity.toString());
-		humanEntity.setUser(userEntity);
-		humanEntity = humanRepository.save(humanEntity);
-		
-		customerEntity.setHuman(humanEntity);
-		System.out.println(customerEntity.toString());
-		return customerRepository.save(customerEntity);
-		
+
+	public List<User> findAllCustomers(){
+		return (List<User>)userRepository.findAllCustomers();
 	}
 	
+	public List<User> findAllEmployees(){
+		return (List<User>)userRepository.findAllEmployees();
+	}
 	
 	
 	@Transactional(readOnly=true)
-	public  Customer findById(Long id) {
-		System.out.println("error en service: "+ id);
-		return (Customer) customerRepository.findById(id).get();
+	public  User findById(Long id) {
+		
+		User user = userRepository.findById(id).get();
+		user.setPassword("");
+		
+		return user;
 	}
 	
+	@Transactional(readOnly = true)
+	public User findByUsername(String username) {
+		
+		return userRepository.findByUserName(username);
+	
+	}	
+	
+	public User create(User customerDto) {
+		
+//		User userEntity = new User();
+//		userEntity.setId(userDto.getId());
+//		userEntity.setRol(userDto.getRol());
+//		userEntity = userRepository.save(userEntity);
+//		
+//		customerEntity.setHuman(humanEntity);
+		System.out.println("[77]CustomerService::create() \n   " + customerDto.toString());
+		return userRepository.save(customerDto);
+		
+	}
 
 	@Transactional
-	public Customer update(CustomerDto customerDto) {
-		Human humanEntity;
+	public User update(UserDto userDto) {
 		
-
-		Customer customerEntity = customerRepository.findById(customerDto.getId())
-				.orElseThrow(()-> new NoSuchElementException("Producto no encontrado con el id: " + customerDto.getId()));
+		User userEntity = userRepository.findById(userDto.getId())
+				.orElseThrow(()-> new NoSuchElementException("Usuario no encontrado con el id: " + userDto.getId()));
+		System.out.println("** CustomerService::update() - userDto: \n   " + userDto.toString());
+		System.out.println("** CustomerService::update() - userEntity: \n   " + userEntity.toString());
+//		userEntity.setId(userDto.getId())
+		userEntity.setName(userDto.getName());
+		userEntity.setName(userDto.getName());
+		userEntity.setPhone(userDto.getPhone());
+		userEntity.setLastname(userDto.getLastname());
+		userEntity.setLastname(userDto.getLastname());
+		userEntity.setUsername(userDto.getUsername());
 		
-
-		humanEntity = humanRepository.save(customerDto.getHuman());
-		customerEntity.setHuman(humanEntity);
-		return customerRepository.save(customerEntity);
+		return userRepository.save(userEntity);
 		
 		
 	}
 	
-	public void delete(Long id) {
-		customerRepository.deleteById(id);
+	
+	
+	
+	
+	@Transactional
+	public User validateToken(String token) {
+		
+		return userRepository.findUserByToken(token);
+		
+		
+	}
+	
+	@Transactional
+	public User updateToken(User user) {
+		
+		user.setToken(user.getToken());
+		return userRepository.save(user);	
+	}
+	
+	
+	
+	
+	
+	
+	
+	@Transactional
+	public void updateHumanId(Long humanId, Long userId) {
+		userRepository.updateHumanId(humanId, userId);
+		
 	}
 	
 	

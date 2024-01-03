@@ -16,9 +16,7 @@ import raqc.apistore.dto.CredentialsDto;
 import raqc.apistore.dto.TokenDto;
 import raqc.apistore.dto.UserDto;
 import raqc.apistore.dto.UserLoggedDto;
-import raqc.apistore.service.HumanService;
 import raqc.apistore.service.UserService;
-import raqc.apistore.model.Human;
 import raqc.apistore.model.User;
 
 
@@ -30,8 +28,7 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private HumanService humanService;
+
 	
 	
 	@CrossOrigin
@@ -66,7 +63,8 @@ public class AuthController {
 		String response = "";
 		
 
-		System.out.println(credentialsDto);
+		System.out.println("--[" +  new Throwable().getStackTrace()[0].getLineNumber()+ "]AuthController::login() \n    " 
+				+  credentialsDto);
 		
 		
 		try {
@@ -84,13 +82,16 @@ public class AuthController {
 				} else {
 					token.setToken(user.getToken());
 				}
-				System.out.println("aquiiii----" + user.toString());
+				System.out.println("--[" +  new Throwable().getStackTrace()[0].getLineNumber()+ "]AuthController::login() \n    "  
+						+ user.toString());
 				password = user.getPassword();
 				
 				uLDto.setId(user.getId());
 				uLDto.setUsername(user.getUsername());
 				uLDto.setRol(user.getRol());
 				uLDto.setToken(user.getToken());
+				uLDto.setName(user.getName());
+				uLDto.setLastname(user.getLastname());
 			}
 //		} catch (DataAccessException e) {
 		}catch(NoSuchElementException e) {
@@ -107,7 +108,8 @@ public class AuthController {
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		System.out.println("exito login " + token.toString());
+		System.out.println("--[\" +  new Throwable().getStackTrace()[0].getLineNumber()+ \"]AuthController::login() \\n    " 
+				+ "success  - " + token.toString());
 		return new ResponseEntity<UserLoggedDto>(uLDto, HttpStatus.OK);
 		
 		

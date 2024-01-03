@@ -2,7 +2,6 @@ package raqc.apistore.dto;
 
 import java.io.Serializable;
 
-import raqc.apistore.model.Human;
 import raqc.apistore.model.Rol;
 
 public class UserLoggedDto implements Serializable {
@@ -16,6 +15,7 @@ public class UserLoggedDto implements Serializable {
 	private String token;
 	private Rol rol;
 	private String name;
+	private String lastname;
 	
 	
 	
@@ -63,6 +63,16 @@ public class UserLoggedDto implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
 	@Override
 	public String toString() {
 		return "UserLoggedDto [id=" + id + ", username=" + username + ", token=" + token + ", rol=" + rol + ", name="

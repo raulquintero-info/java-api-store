@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -32,8 +34,10 @@ public class Order {
 	private List<OrderProducts> orderproducts;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="")
-	private Customer customer;
+	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private User user;
+	
 	
 	
 
@@ -45,11 +49,8 @@ public class Order {
 	public Order(Date date, String address1, String address2, String city, String country, Double total,
 			OrderStatus orderstatus, List<OrderProducts> orderproducts) {
 		super();
-		this.date = date;
-		this.address1 = address1;
-		this.address2 = address2;
-		this.city = city;
-		this.country = country;
+		this.date = new Date();
+	
 		this.total = total;
 		this.orderstatus = orderstatus;
 		this.orderproducts = orderproducts;
@@ -70,6 +71,8 @@ public class Order {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	
 
 	public String getAddress1() {
 		return address1;
@@ -128,12 +131,12 @@ public class Order {
 	}
 	
 	
-	public Customer getCustomer() {
-		return customer;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public boolean getPickup() {
@@ -143,6 +146,8 @@ public class Order {
 	public void setPickup(boolean pickup) {
 		this.pickup = pickup;
 	}
+
+
 	
 	
 	

@@ -12,16 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import raqc.apistore.dto.CustomerDto;
-import raqc.apistore.dto.HumanDto;
 import raqc.apistore.dto.UserDto;
-import raqc.apistore.model.Customer;
-import raqc.apistore.model.Human;
-import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 import raqc.apistore.model.User;
 import raqc.apistore.service.CustomerService;
-import raqc.apistore.service.HumanService;
-import raqc.apistore.service.UserService;
 
 
 @RestController
@@ -30,21 +24,17 @@ import raqc.apistore.service.UserService;
 public class CustomerController {
 
 
+
+	
 	@Autowired
 	private CustomerService customerService;
-	
-	@Autowired
-	private HumanService humanService;
-	
-	@Autowired
-	private UserService userService;
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/clientes")
 	@ResponseStatus(HttpStatus.OK)
-	public List< Customer > consulta(){
+	public List< User > consulta(){
 		
-	return customerService.findAll();	
+	return customerService.findAllCustomers();	
 		
 	}
 	
@@ -56,7 +46,7 @@ public class CustomerController {
 	public ResponseEntity<?> consultaPorId(@PathVariable Long id){
 		
 
-		Customer customer = null;
+		User customer = null;
 		String response="";
 		System.out.println("error aqui");
 		
@@ -81,7 +71,7 @@ public class CustomerController {
 			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+		return new ResponseEntity<User>(customer, HttpStatus.OK);
 			
 	}
 	
@@ -89,41 +79,29 @@ public class CustomerController {
 	@CrossOrigin
 	@PostMapping("/clientes")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> create(@RequestBody CustomerDto customerDto){
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Create<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+	public ResponseEntity<?> create(@RequestBody UserDto customerDto){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
-		Customer customerNew = new Customer();
-		User userNew = new User();
-		Human humanNew = new Human();
-		Rol rolNew = new Rol(2L,"");
-		customerNew.setId(0L);
+		User customerNew = new User();
+		Rol rolNew = new Rol(2L,"customer");
+		
 		Map<String, Object> response = new HashMap<>();
 		try {
-			System.out.println("customerDto:>>> " + customerDto.toString());
-			System.out.println("human:>>> " + customerDto.getHuman().toString());
+			System.out.println("[90]CustomerController::create(): \n   customerDto:>>> " + customerDto);
 
-			humanNew = customerDto.getHuman();
-			humanNew = humanService.create(humanNew);
-			
-
-			System.out.println("humanNew:>>> " + humanNew.toString());
-
-			customerDto.setHuman(humanNew);
-			customerNew = customerService.create(customerDto);
-
-			System.out.println("userDto:>>>>>>" + customerNew.getHuman().getUser());
-			userNew = customerNew.getHuman().getUser();
-			userNew.setRol(rolNew);
-			userNew.setHuman(humanNew);
-			userService.create(userNew);
-			System.out.println("userNew:>>>>>>" + userNew);
-
-
-			System.out.println("customerNew:>>> " + customerNew.toString());
+			customerNew.setId(0L);
+			customerNew.setRol(rolNew);
+			customerNew.setUsername(customerDto.getUsername());
+			customerNew.setName(customerDto.getName());
+			customerNew.setLastname(customerDto.getLastname());
+			customerNew.setPhone(customerDto.getPhone());
+			System.out.println("[98]CustomerController::create(): \n   customerNew:>>>>>> " + customerNew);
+			customerService.create(customerNew);
+//			System.out.println("customerNew:>>> " + customerNew.toString());
 
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
-			response.put("message", "Error al tratar de actualizar el registo " + customerNew.getId());
+			response.put("message", "Error al tratar de agregar el registo " + customerNew.getId());
 			System.out.println("catch:>>>" + customerDto.toString());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
@@ -140,27 +118,22 @@ public class CustomerController {
 	@CrossOrigin
 	@PutMapping("/clientes")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> update(@RequestBody CustomerDto customerDto){
-		Human humanNew = new Human();
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Update<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-		Customer customerNew = new Customer();
+	public ResponseEntity<?> update(@RequestBody UserDto customerDto){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> UPDATE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		System.out.println(customerDto);
+		User customerNew = new User();
 		Map<String, Object> response = new HashMap<>();
 		try {
 			customerNew.setId(customerDto.getId());
-			humanNew = customerDto.getHuman();
-			humanNew = humanService.update(humanNew);
-			System.out.println(customerDto.getHuman());
-			customerNew.setHuman(humanNew);
-//			customerNew = this.customerService.update(customerDto);
-			
+			customerNew = this.customerService.update(customerDto);
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
 			response.put("mensaje", "Error al tratar de actualizar el registo " + customerNew.getId());
 			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
 		}
 		
-		
-		response.put("mensaje", "Cliente actualizado con exito, con el ID "+humanNew.getId() +" "  );
+		System.out.println(customerNew);
+		response.put("mensaje", "Cliente actualizado con exito, con el ID "+customerNew.getId() +" "  );
 		response.put("customer", customerNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
@@ -171,20 +144,20 @@ public class CustomerController {
 	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
-		try {
-			Customer customerDelete = this.customerService.findById(id);
-			
-			if(customerDelete==null) {
-				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			customerService.delete(id);
-			
-		}catch(DataAccessException e) {
-			response.put("message", "Error al eliminar en base de datos");
-			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+//		try {
+//			Customer customerDelete = this.customerService.findById(id);
+//			
+//			if(customerDelete==null) {
+//				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
+//				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//			}
+//			customerService.delete(id);
+//			
+//		}catch(DataAccessException e) {
+//			response.put("message", "Error al eliminar en base de datos");
+//			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage()));
+//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
 			
 		response.put("mensaje", "Registro eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);

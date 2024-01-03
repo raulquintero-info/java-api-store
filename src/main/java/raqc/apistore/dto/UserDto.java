@@ -2,7 +2,6 @@ package raqc.apistore.dto;
 
 import java.util.List;
 
-import raqc.apistore.model.Human;
 import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 
@@ -12,11 +11,12 @@ public class UserDto {
 	private Long id;
 	private String username;
 	private String password;
+	private String name;
+	private String lastname;
+	private String phone;
 	private Rol rol;
 	private String token;
 	private Boolean isLogged;
-	private Human human;
-
 	
 
 	public UserDto() {
@@ -64,6 +64,41 @@ public class UserDto {
 		this.password = password;
 	}
 	
+	
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public String getLastname() {
+		return lastname;
+	}
+
+
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+
 	public String getToken() {
 		return token;
 	}
@@ -92,25 +127,22 @@ public class UserDto {
 	}
 
 
-	public Human getHuman() {
-		return human;
-	}
-
-
-
-	public void setHuman(Human human) {
-		this.human = human;
-	}
-	
-	
-
-
 
 	@Override
 	public String toString() {
-		return "UserDto [id=" + id + ", username=" + username + ", password=" + password + ", rol=" + rol + ", token="
-				+ token + ", isLogged=" + isLogged + ", human=" + human + "]";
+		return "UserDto [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
+				+ ", lastname=" + lastname + ", phone=" + phone + ", rol=" + rol + ", token=" + token + ", isLogged="
+				+ isLogged + "]";
 	}
+
+
+
+
+
+	
+	
+
+
 
 
 	
