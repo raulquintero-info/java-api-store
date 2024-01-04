@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import raqc.apistore.dto.OrderDto;
 import raqc.apistore.model.Order;
+import raqc.apistore.model.OrderProducts;
 import raqc.apistore.model.OrderStatus;
 import raqc.apistore.model.Product;
 import raqc.apistore.repository.IOrderRepository;
+import raqc.apistore.repository.IOrderProductsRepository;
 
 
 
@@ -26,6 +28,9 @@ public class OrderService {
 	
 	@Autowired
 	private IOrderRepository orderRepository;
+	
+	@Autowired
+	private IOrderProductsRepository orderRepositoryProducts;
 	
 	@Transactional(readOnly = true)
 	public List<Order> findAllByUserId(Long id){
@@ -40,7 +45,7 @@ public class OrderService {
 	
 	@Transactional(readOnly=true)
 	public  Order findById(Long id) {
-		System.out.println("[41]OrderService::findById() \n   id: " + id);
+		System.out.println("[43]OrderService::findById() \n   id: " + id);
 		return (Order) orderRepository.findById(id).orElse(null);
 	}
 	
@@ -60,7 +65,24 @@ public class OrderService {
 		order.setPickup(orderDto.isPickup());
 		order.setOrderstatus(status);
 		
-		return orderRepository.save(order);
+		order = orderRepository.save(order);
+		
+		orderDto.getOrderproducts().forEach((oProdDto)->{
+			OrderProducts oProd = new OrderProducts();
+			Product prod = new Product();
+			
+			prod.setId(oProdDto.getId());
+			oProd.setProduct(prod);
+			oProd.setPrice(oProdDto.getPrice());
+			oProd.setQuantity(oProdDto.getQuantity());
+//			oProd.setOrder(order);
+			
+			orderRepositoryProducts.save(oProd);
+			
+		});
+		
+		
+		return order;
 		
 		
 //		System.out.println("[ + new Throwable().getStackTrace()[0].getLineNumber() + \"]OrderService::register() \n   orderDto: " + orderDto.toString());
