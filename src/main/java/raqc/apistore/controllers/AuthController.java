@@ -108,7 +108,7 @@ public class AuthController {
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		System.out.println("--[\" +  new Throwable().getStackTrace()[0].getLineNumber()+ \"]AuthController::login() \\n    " 
+		System.out.println("--[" +  new Throwable().getStackTrace()[0].getLineNumber()+ "]AuthController::login() \\n    " 
 				+ "success  - " + token.toString());
 		return new ResponseEntity<UserLoggedDto>(uLDto, HttpStatus.OK);
 		
