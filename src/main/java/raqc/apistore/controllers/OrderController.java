@@ -42,7 +42,10 @@ public class OrderController {
 	@GetMapping("/ordenes/usuario/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Order> allOrdersByUserId(@PathVariable Long id){
-		return orderService.findAllByUserId(id);		
+		System.out.println("* ------- /ordenes/usuario/" + id);
+		List<Order> order = orderService.findAllByUserId(id);
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::allOrdersByUserId() \n     size: " + order.size());
+		return order;
 	}
 	
 	
@@ -53,26 +56,26 @@ public class OrderController {
 	@GetMapping("/ordenes/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?>  orderById(@PathVariable Long id){
-		
+		System.out.println("* ------- /ordenes/" + id);
 		Order order = null;
 		String response = "";
 		try {
-			System.out.println("[50]OrderController::orderById() \n   obteniendo la orden id: " + id);
+			
 			order = orderService.findById(id);
 			
 		}catch(DataAccessException e) {
-			response = "[52]OrderController::orderById() \n   Error al realizar la consulta.";
+			response = "Error al realizar la consulta.";
 			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
-			System.out.println("error aqui 3");
-
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::orderById() \n     " + response);
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		if(order==null) {
 			response ="La orden con el ID: ".concat(id.toString()).concat(" no existe en base de datos");
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::orderById() \n     " + response);
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
-
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::orderByid() \n     " + order.getOrderproducts().toString());
 		return new ResponseEntity<Order>(order, HttpStatus.OK);	
 	}
 	
@@ -81,30 +84,31 @@ public class OrderController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/checkout")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?>  saveOrder(@RequestBody OrderDto orderDto){
-		
+	public ResponseEntity<?>  save(@RequestBody OrderDto orderDto){
+		System.out.println("* ------- /checkout     ");
 		Order order = null;
 		String response = "";
 		try {
-			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::orderById() \n     "
-					+ "cartitems" + orderDto.toString());
+			
 			order = orderService.register(orderDto);
 
 
 			
 		}catch(DataAccessException e) {
-			response = "* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::saveOrder() \n   Error al tratar de registrar la orden";
+			response = "* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n   Error al tratar de registrar la orden \n";
 			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
-			System.out.println("* [" +new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::saveOrder() \n   " + response.concat(e.getMessage().concat(e.getMostSpecificCause().toString())));
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response);
 
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		if(order==null) {
 			response ="No ha sido posible registrar la orden";
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response);
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
-
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response 
+				+ "\n " + order.toString());
 		return new ResponseEntity<Order>(order, HttpStatus.OK);	
 	
 	}

@@ -13,7 +13,7 @@ import raqc.apistore.model.Order;
 
 public interface IOrderRepository extends JpaRepository<Order, Long>{
 	
-	@Query(value = "SELECT * From orders where user_id = ?1", nativeQuery = true)
+	@Query(value = "SELECT * FROM orders WHERE user_id = ?1 ORDER BY id DESC", nativeQuery = true)
 	List<Order> findAllByUserId(Long userId);
 
 	

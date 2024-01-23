@@ -66,6 +66,26 @@ public class AddressService {
 		
 		
 	}
+	
+	@Transactional
+	public Address update (AddressDto addressDto) {
+		
+		Address addressEntity = addressRepository.findById(addressDto.getId())
+				.orElseThrow(()-> new NoSuchElementException("Domicilio no encontrado con el id: " + addressDto.getId()));
+		
+		addressEntity.setId(addressDto.getId());
+		addressEntity.setAlias(addressDto.getAlias());
+		addressEntity.setAddress1(addressDto.getAddress1());
+		addressEntity.setAddress2(addressDto.getAddress2());
+		addressEntity.setCity(addressDto.getCity());
+		addressEntity.setCountry(addressDto.getCountry());
+		addressEntity.setZipCode(addressDto.getZipCode());
+		addressEntity.setUser(addressDto.getUser());
+		return addressRepository.save(addressEntity);
+		
+		
+	}
+	
 //	
 //	@Transactional
 //	public Category update(CategoryDto categoryDto) {

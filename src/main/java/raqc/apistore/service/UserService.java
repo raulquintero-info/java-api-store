@@ -87,7 +87,7 @@ public class UserService {
 	public User update(UserDto userDto) {
 		
 		User userEntity = userRepository.findById(userDto.getId())
-				.orElseThrow(()-> new NoSuchElementException("Categoria no encontrado con el id: " + userDto.getId()));
+				.orElseThrow(()-> new NoSuchElementException("Usuario no encontrado con el id: " + userDto.getId()));
 		
 //		userEntity.setId(userDto.getId())
 		userEntity.setUsername(userDto.getUsername());

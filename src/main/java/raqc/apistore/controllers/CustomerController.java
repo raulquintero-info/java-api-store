@@ -87,17 +87,10 @@ public class CustomerController {
 		
 		Map<String, Object> response = new HashMap<>();
 		try {
-			System.out.println("[90]CustomerController::create(): \n   customerDto:>>> " + customerDto);
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]CustomerController::create() \n     " + customerDto);
 
-			customerNew.setId(0L);
-			customerNew.setRol(rolNew);
-			customerNew.setUsername(customerDto.getUsername());
-			customerNew.setName(customerDto.getName());
-			customerNew.setLastname(customerDto.getLastname());
-			customerNew.setPhone(customerDto.getPhone());
-			System.out.println("[98]CustomerController::create(): \n   customerNew:>>>>>> " + customerNew);
-			customerService.create(customerNew);
-//			System.out.println("customerNew:>>> " + customerNew.toString());
+			
+			customerNew = customerService.create(customerDto);
 
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
@@ -133,7 +126,7 @@ public class CustomerController {
 		}
 		
 		System.out.println(customerNew);
-		response.put("mensaje", "Cliente actualizado con exito, con el ID "+customerNew.getId() +" "  );
+		response.put("message", "Cliente actualizado con exito, con el ID "+customerNew.getId() +" "  );
 		response.put("customer", customerNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
@@ -141,25 +134,27 @@ public class CustomerController {
 	
 	@CrossOrigin
 	@DeleteMapping("/clientes/{id}")
-	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
+	public ResponseEntity<?> deleteById(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
-//		try {
-//			Customer customerDelete = this.customerService.findById(id);
-//			
-//			if(customerDelete==null) {
-//				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
-//				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
-//			customerService.delete(id);
-//			
-//		}catch(DataAccessException e) {
-//			response.put("message", "Error al eliminar en base de datos");
-//			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage()));
-//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		try {
+			User customerToDelete = this.customerService.findById(id);
 			
-		response.put("mensaje", "Registro eliminado con exito");
+			if(customerToDelete==null) {
+				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			customerService.delete(id);
+			
+		}catch(DataAccessException e) {
+			response.put("message", "Error al eliminar en base de datos");
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+			
+		response.put("mensaje", "Registro [" + id + "] eliminado con exito");
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]CustomerController::deleteById() \n     "
+				+ "response" + response);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}

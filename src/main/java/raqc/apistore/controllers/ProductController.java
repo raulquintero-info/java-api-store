@@ -47,7 +47,8 @@ public class ProductController {
 	@GetMapping("/productos")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Product> consulta(@RequestParam (required=false, defaultValue = "0" ) Integer categoryid , @RequestParam (required=false,  defaultValue= "0") String page){
-		System.out.println(categoryid + page);
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::consulta() \n     "
+				+ "page: " + page +",categoryId: " + categoryid);
 		return productService.findAll();
 //		return productService.findAllProducts(categoryid, page);
 		
@@ -74,7 +75,8 @@ public class ProductController {
 	@GetMapping("/productos-oferta")
 	@ResponseStatus(HttpStatus.OK)
 	public ProductDatatableDto consultaOfertas(){
-		
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::consultaOfertas() \n     ");
+
 		ProductDatatableDto response = new ProductDatatableDto();
 		
 		response.setContent(productService.findAllOffers());	
@@ -100,11 +102,13 @@ public class ProductController {
 //===============================================
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/productos/page/{page}")
-	public ResponseEntity<?> consultaPage(@PathVariable Integer page, String orderBy){
-		
+	public ResponseEntity<?> consultaPage(@PathVariable Integer page, Integer categoryId, String orderBy){
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::consultaPage() \n     ");
+
 		Page<Product> pageableResult;
 		String response="";
-		System.out.println(orderBy);
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::consultaPage() \n     "
+				+ "page: " + page + " categoryId: " + categoryId + ",orderBy: " + orderBy);
 		try {
 			if (page<1) throw new Exception();
 			Pageable pageable = PageRequest.of(page - 1, 5, Sort.by("id").descending());
@@ -126,7 +130,8 @@ public class ProductController {
 	@CrossOrigin
 	@GetMapping("/productos/categoria/{id}/usuario/{userId}")
 	public ResponseEntity<?> getByCategoryId(@PathVariable Long id, @PathVariable Long userId){
-	
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::getByCategoryId() \n     ");
+
 		List<Product> products = null;
 		String response="";
 		
@@ -178,7 +183,7 @@ public class ProductController {
 	@GetMapping("/productos/{id}")
 	public ResponseEntity<?> consultaPorId(@PathVariable Long id){
 		
-		
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::consultaPorId() \n     ");
 		Product producto = null;
 		String response="";
 		System.out.println("error aqui");
@@ -208,7 +213,8 @@ public class ProductController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/productos-favorito/{productId}/usuario/{userId}")
 	public ResponseEntity<?> consultaFavoritoPorUsuarioId(@PathVariable Long productId, @PathVariable Long userId){
-		
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::consultaFavoritoPorUsuarioId() \n     "
+				+ "favorites: ");
 		
 		Product producto = null;
 		String response="";
@@ -265,26 +271,41 @@ public class ProductController {
 	
 	@CrossOrigin
 	@DeleteMapping("/productos/{id}")
-	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
-		
+	public ResponseEntity<?> deleteById(@PathVariable Long id) {
+		Product productToDelete;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			Product productDelete = this.productService.findById(id);
-			if(productDelete==null) {
+			
+			productToDelete = this.productService.findById(id);
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::deleteById() \n     "
+					+ "id: " + id);
+			
+			if(productToDelete==null) {
 				response.put("mensaje", "Error al eliminar. Este registro ya no existe en base de datos");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			productService.delete(id);
-			categoryService.minusOneQuantityProducts(productDelete.getCategory().getId()) ;
-
+			} else {
 			
+//			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::deleteById() \n     "
+//					+ "productoToDelete: " + productToDelete.toString());
+			productService.delete(id);
+			
+//			TODO: obtener el id de la categoria para decremetnar
+//			categoryService.minusOneQuantityProducts(productToDelete.getCategory().getId()) ;
+			}
+				
+				
 		}catch(DataAccessException e) {
 			response.put("message", "Error al eliminar en base de datos");
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage()));
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::deleteById() \n     "
+					+ "response: " + response);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 			
-		response.put("mensaje", "Registro eliminado con exito");
+		response.put("message", "Registro " + id + ", eliminado con exito");
+		response.put("product", productToDelete);
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::deleteById() \n     "
+				+ "response: " + response);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}
@@ -326,13 +347,14 @@ public class ProductController {
 	@PutMapping("/productos")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> update(@RequestBody ProductDto productDto){
-		
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::update() \n     "
+				+ productDto);
 		Product productNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
 			productNew = this.productService.update(productDto);
-			System.out.println("productoNew:>>> " + productDto.toString());
-			System.out.println("productoNew:>>> " + productNew.toString());
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::update() \n     "
+					+ productNew);
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
 			response.put("mensaje", "Error al tratar de actualizar el registo " + productNew.getId());

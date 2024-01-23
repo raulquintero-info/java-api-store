@@ -77,7 +77,7 @@ public class CategoryController {
 	
 	
 	@CrossOrigin
-	@DeleteMapping("/categorias/{id}")
+	@DeleteMapping("/admin/categorias/{id}")
 	public ResponseEntity<?> borraPorId(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
@@ -128,12 +128,12 @@ public class CategoryController {
 	@CrossOrigin
 	@PutMapping("/categorias")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> update(@RequestBody CategoryDto productDto){
+	public ResponseEntity<?> update(@RequestBody CategoryDto categoryDto){
 		
 		Category categoryNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			categoryNew = this.categoryService.update(productDto);
+			categoryNew = this.categoryService.update(categoryDto);
 			
 		}catch(DataAccessException e) {
 			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));

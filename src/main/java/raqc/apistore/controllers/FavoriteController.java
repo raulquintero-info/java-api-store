@@ -44,37 +44,21 @@ public class FavoriteController {
 	
 	
 	
-	
-//	@CrossOrigin(origins = "http://localhost:4200")
-//	@GetMapping("/favoritos")
-//	
-//	@ResponseStatus(HttpStatus.OK)
-//	public List<Product> consulta(@PathVariable Long id){
-//		
-//		
-//		
-//		return favoriteService.findFavoritesByUserId(id);
-//		
-//	}
-	
-	
-	
-	
 	@CrossOrigin
 	@GetMapping("/favoritos/{id}")
 	public ResponseEntity<?> getFavoritesByUserId(@PathVariable Long id){
-	
+		System.out.println("* -------- /favoritos/" + id + "   [background]");
 		List<Integer> arFavorites = null;
 		List<Product> favorites = null;
 //		String arrayFavorites = null;
 		String response="";
 		
-		System.out.println("UserID>>>>>" + id);
 		
 		
 		try {
 			arFavorites = favoriteService.getFavoritesIdByUserId(id);
-			System.out.println(">>>arFavorites" + arFavorites);
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]FavoriteController::getFavoritesByUserId() \n     "
+					+ "favorites: " + arFavorites);
 //			arrayFavorites = this.whenCollectorsJoining_thenPrintCustom(arFavorites);
 			//genera un error al ejecutar esta sentencia
 //			System.out.println(StringUtils.join(arFavorites, "|"));
@@ -109,7 +93,9 @@ public class FavoriteController {
 			favoriteProduct.setProductId(favoriteDto.getProductId());
 			favoriteProduct.setUserId(favoriteDto.getUserId());
 			favoriteProduct = this.favoriteService.addFavorite(favoriteProduct);
-			System.out.println("Add.favoritePRoduct" + favoriteProduct.toString());
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]FavoriteController::addFavorite() \n     "
+					+ "product: " + favoriteProduct.toString());
+			
 			}
 			product = productService.findFavoriteByUserId(favoriteDto.getProductId(), favoriteDto.getUserId());
 			
@@ -139,7 +125,8 @@ public class FavoriteController {
 			if(favoriteService.findByProductIdAndUserId(favoriteDto.getProductId(), favoriteDto.getUserId())!= null) {
 			favoriteProduct.setProductId(favoriteDto.getProductId());
 			favoriteProduct.setUserId(favoriteDto.getUserId());
-			System.out.println("favoriteProduct:--- " + favoriteProduct.toString());
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]FavoriteController::removeFavorite() \n     "
+					+ "product: " + favoriteProduct.toString());
 			this.favoriteService.removeFavorite(favoriteProduct);
 			System.out.println("remove.favoritePRoduct" + favoriteProduct.toString());
 			}

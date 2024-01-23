@@ -39,4 +39,7 @@ public interface IUserRepository extends JpaRepository<User, Long>{
 	@Query(value = "SELECT * FROM users WHERE  users.id = :id", nativeQuery = true)
 	User findByUserId(@PathVariable("id") Long id);
 	
+	@Query(value = "SELECT count(id) FROM users WHERE  rol_id=2", nativeQuery = true)
+	Long countByCustomers();
+	
 }

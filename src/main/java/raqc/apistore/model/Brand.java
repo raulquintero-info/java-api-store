@@ -64,6 +64,12 @@ public class Brand implements Serializable{
 	}
 
 
+	@Override
+	public String toString() {
+		return "Brand [id=" + id + ", brandname=" + brandname + ", products=" + products + "]";
+	}
+
+
 
 
 

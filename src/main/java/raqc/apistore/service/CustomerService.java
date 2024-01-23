@@ -24,6 +24,7 @@ import raqc.apistore.model.Category;
 import raqc.apistore.model.Product;
 import raqc.apistore.model.Rol;
 import raqc.apistore.model.User;
+import raqc.apistore.repository.IRoleRepository;
 import raqc.apistore.repository.IUserRepository;
 
 
@@ -34,6 +35,9 @@ public class CustomerService {
 
 	@Autowired
 	private IUserRepository userRepository;
+	
+	@Autowired
+	private IRoleRepository roleRepository;
 	
 	@Transactional(readOnly = true)
 	public List<User> findAll(){
@@ -49,6 +53,11 @@ public class CustomerService {
 		return (List<User>)userRepository.findAllEmployees();
 	}
 	
+	@Transactional(readOnly = true)
+	public Long totalCustomers() {
+		return userRepository.countByCustomers();
+
+	}
 	
 	@Transactional(readOnly=true)
 	public  User findById(Long id) {
@@ -66,16 +75,25 @@ public class CustomerService {
 	
 	}	
 	
-	public User create(User customerDto) {
+	public User create(UserDto customerDto) {
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]CustomerService::create() \n     " + customerDto.toString());
+
+		User user = new User();
+		Rol customerRol = new Rol();
 		
-//		User userEntity = new User();
-//		userEntity.setId(userDto.getId());
-//		userEntity.setRol(userDto.getRol());
-//		userEntity = userRepository.save(userEntity);
+		customerRol.setId(2L);
+		
+		user.setUsername(customerDto.getUsername());
+		user.setPassword(customerDto.getPassword());
+		user.setName(customerDto.getName());
+		user.setLastname(customerDto.getLastname());
+		user.setPhone(customerDto.getPhone());
+		user.setRol(customerRol);
+		user = userRepository.save(user);
 //		
 //		customerEntity.setHuman(humanEntity);
-		System.out.println("[77]CustomerService::create() \n   " + customerDto.toString());
-		return userRepository.save(customerDto);
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]CustomerService::create() \n     " + user);
+		return user;
 		
 	}
 
@@ -86,13 +104,10 @@ public class CustomerService {
 				.orElseThrow(()-> new NoSuchElementException("Usuario no encontrado con el id: " + userDto.getId()));
 		System.out.println("** CustomerService::update() - userDto: \n   " + userDto.toString());
 		System.out.println("** CustomerService::update() - userEntity: \n   " + userEntity.toString());
-//		userEntity.setId(userDto.getId())
-		userEntity.setName(userDto.getName());
+		userEntity.setId(userDto.getId());
 		userEntity.setName(userDto.getName());
 		userEntity.setPhone(userDto.getPhone());
 		userEntity.setLastname(userDto.getLastname());
-		userEntity.setLastname(userDto.getLastname());
-		userEntity.setUsername(userDto.getUsername());
 		
 		return userRepository.save(userEntity);
 		
@@ -100,7 +115,9 @@ public class CustomerService {
 	}
 	
 	
-	
+	public void delete(Long id) {
+		userRepository.deleteById(id);
+	}
 	
 	
 	@Transactional

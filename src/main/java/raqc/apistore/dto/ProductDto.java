@@ -27,6 +27,7 @@ public class ProductDto implements Serializable {
 	private String image;
 	private Brand brand;
 	private Boolean isOffer;
+	private Boolean isFavorite;
 	private Double offerPrice;
 	private Category category;
 	private List<User> users;
@@ -122,6 +123,16 @@ public class ProductDto implements Serializable {
 
 	public void setIsOffer(Boolean isOffer) {
 		this.isOffer = isOffer;
+	}
+
+
+	public Boolean getIsFavorite() {
+		return isFavorite;
+	}
+
+
+	public void setIsFavorite(Boolean isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 
 

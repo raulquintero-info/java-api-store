@@ -22,9 +22,11 @@ public class Product {
 	private Double price;
 	private Integer quantity;
 	private Boolean isOffer;
-	private Long isFavorite;
 	private Double offerPrice;
 	
+	
+	
+	private Boolean isFavorite;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -39,9 +41,9 @@ public class Product {
 	private Category category;
 	
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="product", cascade = CascadeType.ALL)
-	private List<OrderProducts> orderproducts;
-
+//	@OneToMany(fetch=FetchType.LAZY, mappedBy="product", cascade = CascadeType.ALL)
+//	private List<OrderProducts> orderproducts;
+//
 
 	
 	
@@ -52,7 +54,7 @@ public class Product {
 	
 
 	public Product(String name, String description, String image, Double price, Integer quantity, Brand brand,
-			Category category, List<OrderProducts> orderproducts) {
+			Category category) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -61,7 +63,6 @@ public class Product {
 		this.quantity = quantity;
 		this.brand = brand;
 		this.category = category;
-		this.orderproducts = orderproducts;
 	}
 
 
@@ -149,6 +150,21 @@ public class Product {
 
 
 
+
+
+
+	public Boolean getIsFavorite() {
+		return isFavorite;
+	}
+
+
+
+	public void setIsFavorite(Boolean isFavorite) {
+		this.isFavorite = isFavorite;
+	}
+
+
+
 	public Double getOfferPrice() {
 		return offerPrice;
 	}
@@ -165,17 +181,17 @@ public class Product {
 //		return orderproducts;
 //	}
 
-	public void setOrderproducts(List<OrderProducts> orderproducts) {
-		this.orderproducts = orderproducts;
-	}
-
+//	public void setOrderproducts(List<OrderProducts> orderproducts) {
+//		this.orderproducts = orderproducts;
+//	}
+//
 
 
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price="
 				+ price + ", quantity=" + quantity + ", isOffer=" + isOffer + ", offerPrice=" + offerPrice + ", brand="
-				+ brand + ", category=" + category + ", orderproducts=" + orderproducts + "]";
+				+ brand + ", category=" + category +  "]";
 	}
 
 

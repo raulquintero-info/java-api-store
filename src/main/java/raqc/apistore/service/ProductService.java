@@ -44,7 +44,10 @@ public class ProductService {
 	}
 	
 	
-	
+	@Transactional(readOnly = true)
+	public Long getCount() {
+		return productRepository.count();
+	}
 	
 	
 	@Transactional(readOnly = true)
@@ -68,21 +71,26 @@ public class ProductService {
 
 	@Transactional(readOnly=true)
 	public  Product findById(Long id) {
-		System.out.println("error en service");
-		return (Product) productRepository.findById(id).get();
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::findById() \n     "
+				+ "id: " + id);
+		
+		
+		return (Product) productRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Producto no encontrado con el id: " + id));
 	}
 	
+			
 	
 	@Transactional(readOnly=true)
 	public  Product findFavoriteByUserId(Long productId, Long userId) {
-		System.out.println("error en service::findFavoriteByUserId()");
 		return (Product) productRepository.findFavoriteByUserId(productId, userId);
 	}
 	
 	@Transactional(readOnly=true)
 	public  List<Product> findFavoritesByUserId(List<Integer> arFavorites) {
 		if(arFavorites.size()==0) {
-			System.out.println("warning: ProductService::findFavoritesByUserId() - arFavorites is Null");
+			
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductService::findById() \n     "
+					+ "favorites: " + arFavorites.size());
 		}
 		return (List<Product>) productRepository.findFavoritesByUserId(arFavorites);
 	}									   
@@ -90,14 +98,14 @@ public class ProductService {
 	
 	
 	@Transactional(readOnly=true)
-	public  List<Product> getByCategoryId(Long id, Long userId) {
+	public  List<Product> getByCategoryId(Long categoryId, Long userId) {
 		System.out.println(">>>>>userId " + userId);
 		if (userId > 0) {
 			System.out.println(">>>>>userId > 0: " + userId);
-			return productRepository.getByCategroyIdwithFavorites(id, userId);
+			return productRepository.getByCategroyIdwithFavorites(categoryId, userId);
 		}
 		else
-			return productRepository.getByCategroyId(id);
+			return productRepository.getByCategroyId(categoryId);
 	}
 	
 //	@Transactional(readOnly=true)

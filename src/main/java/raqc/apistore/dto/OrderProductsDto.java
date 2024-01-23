@@ -7,30 +7,36 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
+import raqc.apistore.model.Brand;
+
 
 public class OrderProductsDto {
 
 	
 	private Long id;
 	private Integer quantity;
+	private Brand brand;
 	private Double price;
-	
+	private String image;
+	private Long productId;
+	private Boolean isOffer;
+	private String name;
+	private Double offerPrice;
 	
 	
 	private OrderDto order;
 	
-	private ProductDto product;
+
 
 	public OrderProductsDto() {
 		super();
 	}
 
-	public OrderProductsDto(Integer quantity, Double price, OrderDto order, ProductDto product) {
+	public OrderProductsDto(Integer quantity, Double price, OrderDto order) {
 		super();
 		this.quantity = quantity;
 		this.price = price;
 		this.order = order;
-		this.product = product;
 	}
 
 	public Long getId() {
@@ -39,6 +45,43 @@ public class OrderProductsDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+
+
+	public Boolean getIsOffer() {
+		return isOffer;
+	}
+
+	public void setIsOffer(Boolean isOffer) {
+		this.isOffer = isOffer;
+	}
+
+
+
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getOfferPrice() {
+		return offerPrice;
+	}
+
+	public void setOfferPrice(Double offerPrice) {
+		this.offerPrice = offerPrice;
 	}
 
 	public Integer getQuantity() {
@@ -56,6 +99,26 @@ public class OrderProductsDto {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	
+	
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
 
 	public OrderDto getOrder() {
 		return order;
@@ -65,19 +128,16 @@ public class OrderProductsDto {
 		this.order = order;
 	}
 
-	public ProductDto getProduct() {
-		return product;
-	}
-
-	public void setProduct(ProductDto product) {
-		this.product = product;
-	}
-
 	@Override
 	public String toString() {
-		return "OrderProductsDto [id=" + id + ", quantity=" + quantity + ", price=" + price + ", order=" + order
-				+ ", product=" + product + "]";
+		return "OrderProductsDto [id=" + id + ", quantity=" + quantity + ", brand=" + brand + ", price=" + price
+				+ ", image=" + image + ", productId=" + productId + ", isOffer=" + isOffer + ", name=" + name
+				+ ", offerPrice=" + offerPrice + ", order=" + order + "]";
 	}
+
+	
+
+
 	
 	
 	

@@ -6,21 +6,28 @@ public class CredentialsDto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private String email;
+	private String username;
 	private String password;
 	
 	
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String email) {
+		this.username = email;
 	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return "CredentialsDto [username=" + username + ", password=" + password + "]";
 	}
 	
 	

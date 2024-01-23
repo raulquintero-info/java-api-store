@@ -36,7 +36,7 @@ public class AddressController {
 	@GetMapping("/direcciones")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Address> allAddresses(){
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Address getAll <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n  *************** /direcciones   ");
 		return addressService.findAll();		
 	}
 	
@@ -72,6 +72,8 @@ public class AddressController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> create(@RequestBody AddressDto addressDto){
 		
+		
+		
 		Address addressNew = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
@@ -89,6 +91,30 @@ public class AddressController {
 		
 		response.put("mensaje", "Registro Grabado con exito, con el ID "+addressNew.getId() +" "  );
 		response.put("category", addressNew);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		
+	}
+	
+	@CrossOrigin
+	@PutMapping("/direcciones")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> update(@RequestBody AddressDto addressDto){
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]AddressController::update() \n     "
+				+ addressDto);
+		Address addressNew = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			addressNew = this.addressService.update(addressDto);
+			
+		}catch(DataAccessException e) {
+			response.put("error", e.getMessage().concat(e.getMostSpecificCause().getLocalizedMessage().toString()));
+			response.put("mensaje", "Error al tratar de actualizar el registo " + addressNew.getId());
+			return new ResponseEntity<Map<String, Object>>(response,HttpStatus. INTERNAL_SERVER_ERROR);
+		}
+		
+		
+		response.put("mensaje", "Registro actualizado con exito, con el ID "+ addressNew.getId() +" "  );
+		response.put("address", addressNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		
 	}

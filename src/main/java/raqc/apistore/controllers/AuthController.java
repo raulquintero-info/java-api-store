@@ -68,7 +68,7 @@ public class AuthController {
 		
 		
 		try {
-			user = userService.findByUsername(credentialsDto.getEmail());
+			user = userService.findByUsername(credentialsDto.getUsername());
 			
 			if(user==null) {
 				throw new NoSuchElementException();

@@ -147,6 +147,13 @@ public class Order {
 		this.pickup = pickup;
 	}
 
+	@Override
+	public String toString() {
+		return "Order [Id=" + Id + ", date=" + date + ", address1=" + address1 + ", address2=" + address2 + ", city="
+				+ city + ", country=" + country + ", total=" + total + ", pickup=" + pickup + ", orderstatus="
+				+ orderstatus ;
+	}
+
 
 	
 	

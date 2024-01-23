@@ -32,12 +32,15 @@ public class FavoriteService {
 	
 	@Transactional(readOnly=true)
 	public  Favorite findById(Long id) {
-		System.out.println("error en service::findById()");
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]FavoriteService::findById() \n     "
+				+ "id: " + id);
 		return favoriteRepository.findById(id).get();
 	}
 	
 	@Transactional(readOnly=true)
 	public  Integer findByProductIdAndUserId(Long id, Long userId) {
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::deleteById() \n     "
+				+ "productId: " + id + ", userId: " +userId);
 		System.out.println("error en service::findByProductIdAndUserId()");
 		return (Integer) favoriteRepository.findByProductIdAndUserId(id, userId);
 	}
@@ -57,14 +60,17 @@ public class FavoriteService {
 	@Transactional
 //	@Modifying(clearAutomatically = true)
 	public  Favorite addFavorite(Favorite  favoriteProduct) {
-		System.out.println(" >>>>>>>>>>>> addFavorite p: " + favoriteProduct.getProductId() + " u: " + favoriteProduct.getUserId() );
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::addFavorite() \n     "
+				+ "p: " + favoriteProduct.getProductId() + " u: " + favoriteProduct.getUserId() );
 		return favoriteRepository.save(favoriteProduct);
 	}
 	
 	@Transactional
 	public  void removeFavorite(Favorite  favoriteProduct) {
 		Favorite temp = null;
-		System.out.println(" >>>>>>>>>>>> removeFavorite p: " + favoriteProduct.getProductId() + " u: " + favoriteProduct.getUserId());
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]ProductController::addFavorite() \n     "
+				+ "favoriteProduct: " + favoriteProduct.toString() + " u: " + favoriteProduct.getUserId() );
+		
 		favoriteRepository.remove(favoriteProduct.getProductId(),favoriteProduct.getUserId());
 
 	}

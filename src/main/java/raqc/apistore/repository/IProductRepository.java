@@ -26,6 +26,7 @@ public interface IProductRepository extends JpaRepository<Product, Long>{
 	@Query(value = "SELECT * FROM products WHERE category_id = ?1 ORDER BY is_offer ASC", nativeQuery = true)
 	List<Product> getByCategroyId(Long categoryId);
 	
+	//query to retrieve favorites products by userId
 	@Query(value = "SELECT *, EXISTS(SELECT user_id FROM favorites where user_id = ?2 and product_id=products.id) as isFavorite "
 			+ "FROM products "
 			+ "WHERE category_id = ?1 ORDER BY is_offer ASC", nativeQuery = true)
@@ -38,6 +39,7 @@ public interface IProductRepository extends JpaRepository<Product, Long>{
 //	@Query(value = "SELECT * FROM favorites WHERE user_id in (?1) ", nativeQuery = true)
 //	List<Product> findFavoritesIdByUserId(Long categoryId);
 
+	//Query to retrieve one product with favorite status by userId
 	@Query(value = "SELECT *, (SELECT user_id FROM favorites WHERE user_id = ?2 AND product_id=products.id) AS isFavorite "
 			+ "FROM products "
 			+ "WHERE products.id= ?1  ", nativeQuery = true)
