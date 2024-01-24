@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 
+import raqc.apistore.model.OrderProducts;
+import raqc.apistore.model.OrderStatus;
 import raqc.apistore.model.User;
 
 
@@ -22,16 +24,16 @@ public class OrderDto {
 
 	private User user;
 	
-	private OrderStatusDto orderstatus;
+	private OrderStatus orderstatus;
 	
-	private List<OrderProductsDto> orderproducts;
+	private List<OrderProducts> orderproducts;
 
 	public OrderDto() {
 		super();
 	}
 
 	public OrderDto(Date date, String address1, String address2, String city, String country, Double total,
-			OrderStatusDto orderstatus, List<OrderProductsDto> orderproducts) {
+			OrderStatus orderstatus, List<OrderProducts> orderproducts) {
 		super();
 		this.date = date;
 		this.address1 = address1;
@@ -108,19 +110,19 @@ public class OrderDto {
 		this.total = total;
 	}
 
-	public OrderStatusDto getOrderstatus() {
+	public OrderStatus getOrderstatus() {
 		return orderstatus;
 	}
 
-	public void setOrderstatus(OrderStatusDto orderstatus) {
+	public void setOrderstatus(OrderStatus orderstatus) {
 		this.orderstatus = orderstatus;
 	}
 
-	public List<OrderProductsDto> getOrderproducts() {
+	public List<OrderProducts> getOrderproducts() {
 		return orderproducts;
 	}
 
-	public void setOrderproducts(List<OrderProductsDto> orderproducts) {
+	public void setOrderproducts(List<OrderProducts> orderproducts) {
 		this.orderproducts = orderproducts;
 	}
 	

@@ -55,6 +55,29 @@ public class OrderService {
 		return (Order) orderRepository.findById(id).orElse(null);
 	}
 	
+	
+	@Transactional
+	public  Order update(OrderDto orderDto) {
+//	public  void register(OrderDto orderDto) {
+		
+		Order order = new Order();
+		order.setId(orderDto.getId());
+		order.setUser(orderDto.getUser());
+		order.setDate(order.getDate());
+		order.setAddress1(orderDto.getAddress1());
+		order.setAddress2(orderDto.getAddress2());
+		order.setCity(orderDto.getCity());
+		order.setCountry(orderDto.getCountry());
+		order.setTotal(orderDto.getTotal());
+		order.setPickup(orderDto.isPickup());
+		order.setOrderstatus(orderDto.getOrderstatus());
+		order.setOrderproducts(orderDto.getOrderproducts());
+		
+		
+		order = orderRepository.save(order);
+		return order;
+
+	}
 	@Transactional
 	public  Order register(OrderDto orderDto) {
 //	public  void register(OrderDto orderDto) {
@@ -92,7 +115,7 @@ public class OrderService {
 			
 			oProd.setProductId(orderDto.getOrderproducts().get(i).getId());
 			oProd.setName(orderDto.getOrderproducts().get(i).getName());
-			oProd.setBrand(orderDto.getOrderproducts().get(i).getBrand().getBrandname());
+			oProd.setBrand(orderDto.getOrderproducts().get(i).getBrand());
 			oProd.setOfferPrice(orderDto.getOrderproducts().get(i).getOfferPrice());
 			oProd.setPrice(orderDto.getOrderproducts().get(i).getPrice());
 			oProd.setQuantity(orderDto.getOrderproducts().get(i).getQuantity());

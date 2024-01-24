@@ -113,5 +113,37 @@ public class OrderController {
 	
 	}
 	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@PutMapping("/ordenes/update-status")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?>  update(@RequestBody OrderDto orderDto){
+		System.out.println("* ------- /ordenes/update-status     ");
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::update() \n    " + orderDto.toString());
+		Order order = null;
+		String response = "";
+		try {
+			
+			order = orderService.update(orderDto);
+
+
+			
+		}catch(DataAccessException e) {
+			response = "* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n   Error al tratar de registrar la orden \n";
+			response = response.concat(e.getMessage().concat(e.getMostSpecificCause().toString()));
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response);
+
+			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(order==null) {
+			response ="No ha sido posible registrar la orden";
+			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response);
+			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
+		}
+		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " 
+				+ "\n " + order.toString());
+		return new ResponseEntity<Order>(order, HttpStatus.OK);	
+	
+	}
 	
 }
