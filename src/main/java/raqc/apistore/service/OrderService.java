@@ -19,6 +19,7 @@ import raqc.apistore.model.OrderProducts;
 import raqc.apistore.model.OrderStatus;
 import raqc.apistore.model.Product;
 import raqc.apistore.repository.IOrderRepository;
+import raqc.apistore.repository.IOrderStatusRepository;
 import raqc.apistore.repository.IOrderProductsRepository;
 
 
@@ -32,6 +33,9 @@ public class OrderService {
 	
 	@Autowired
 	private IOrderProductsRepository orderProductsRepository;
+	
+	@Autowired
+	private IOrderStatusRepository orderStatusRepository;
 	
 	@Transactional(readOnly = true)
 	public List<Order> findAllByUserId(Long id){
@@ -60,21 +64,26 @@ public class OrderService {
 	public  Order update(OrderDto orderDto) {
 //	public  void register(OrderDto orderDto) {
 		
-		Order order = new Order();
-		order.setId(orderDto.getId());
-		order.setUser(orderDto.getUser());
-		order.setDate(order.getDate());
-		order.setAddress1(orderDto.getAddress1());
-		order.setAddress2(orderDto.getAddress2());
-		order.setCity(orderDto.getCity());
-		order.setCountry(orderDto.getCountry());
-		order.setTotal(orderDto.getTotal());
-		order.setPickup(orderDto.isPickup());
-		order.setOrderstatus(orderDto.getOrderstatus());
-		order.setOrderproducts(orderDto.getOrderproducts());
+		Order order = (Order) orderRepository.findById(orderDto.getId()).orElse(null);
 		
+//		order.setId(orderDto.getId());
+//		order.setUser(orderDto.getUser());
+//		order.setDate(order.getDate());
+//		order.setAddress1(orderDto.getAddress1());
+//		order.setAddress2(orderDto.getAddress2());
+//		order.setCity(orderDto.getCity());
+//		order.setCountry(orderDto.getCountry());
+//		order.setTotal(orderDto.getTotal());
+//		order.setPickup(orderDto.isPickup());
 		
-		order = orderRepository.save(order);
+//		if( order.getId()>0) {
+			order.setOrderstatus(orderDto.getOrderstatus());
+			order = orderRepository.save(order);
+//		}
+		
+		System.out.println("\n* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderService::update() \n     "
+				+  order.toString());
+		
 		return order;
 
 	}
@@ -115,7 +124,7 @@ public class OrderService {
 			
 			oProd.setProductId(orderDto.getOrderproducts().get(i).getId());
 			oProd.setName(orderDto.getOrderproducts().get(i).getName());
-			oProd.setBrand(orderDto.getOrderproducts().get(i).getBrand());
+			oProd.setBrand(orderDto.getOrderproducts().get(i).getBrand().getBrandname());
 			oProd.setOfferPrice(orderDto.getOrderproducts().get(i).getOfferPrice());
 			oProd.setPrice(orderDto.getOrderproducts().get(i).getPrice());
 			oProd.setQuantity(orderDto.getOrderproducts().get(i).getQuantity());

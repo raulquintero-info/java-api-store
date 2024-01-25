@@ -26,14 +26,14 @@ public class OrderDto {
 	
 	private OrderStatus orderstatus;
 	
-	private List<OrderProducts> orderproducts;
+	private List<OrderProductsDto> orderproducts;
 
 	public OrderDto() {
 		super();
 	}
 
 	public OrderDto(Date date, String address1, String address2, String city, String country, Double total,
-			OrderStatus orderstatus, List<OrderProducts> orderproducts) {
+			OrderStatus orderstatus, List<OrderProductsDto> orderproducts) {
 		super();
 		this.date = date;
 		this.address1 = address1;
@@ -118,11 +118,11 @@ public class OrderDto {
 		this.orderstatus = orderstatus;
 	}
 
-	public List<OrderProducts> getOrderproducts() {
+	public List<OrderProductsDto> getOrderproducts() {
 		return orderproducts;
 	}
 
-	public void setOrderproducts(List<OrderProducts> orderproducts) {
+	public void setOrderproducts(List<OrderProductsDto> orderproducts) {
 		this.orderproducts = orderproducts;
 	}
 	

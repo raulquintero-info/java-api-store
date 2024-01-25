@@ -88,6 +88,13 @@ public class OrderStatus {
 	}
 
 
+	@Override
+	public String toString() {
+		return "OrderStatus [Id=" + Id + ", name=" + name + ", dotColor=" + dotColor + ", bgColor=" + bgColor
+				+ ", orders=" + orders + "]";
+	}
+
+
 	
 
 	

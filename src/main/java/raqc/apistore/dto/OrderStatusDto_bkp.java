@@ -58,6 +58,12 @@ public class OrderStatusDto_bkp {
 	}
 
 
+	@Override
+	public String toString() {
+		return "OrderStatusDto_bkp [Id=" + Id + ", name=" + name + ", orders=" + orders + "]";
+	}
+
+
 	
 
 	

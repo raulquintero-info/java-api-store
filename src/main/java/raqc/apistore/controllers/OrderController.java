@@ -81,7 +81,7 @@ public class OrderController {
 	
 	
 	
-	@CrossOrigin(origins = "http://localhost:4200")
+	@CrossOrigin
 	@PostMapping("/checkout")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?>  save(@RequestBody OrderDto orderDto){
@@ -118,7 +118,7 @@ public class OrderController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?>  update(@RequestBody OrderDto orderDto){
 		System.out.println("* ------- /ordenes/update-status     ");
-		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::update() \n    " + orderDto.toString());
+		System.out.println("\n* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::update() \n    " + orderDto.toString());
 		Order order = null;
 		String response = "";
 		try {
@@ -140,8 +140,8 @@ public class OrderController {
 			System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " + response);
 			return new ResponseEntity<String>(response, HttpStatus.NOT_FOUND);
 		}
-		System.out.println("* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::save() \n     " 
-				+ "\n " + order.toString());
+		System.out.println("\n* [" + new Throwable().getStackTrace()[0].getLineNumber() + "]OrderController::update() \n     " 
+				+  order.toString());
 		return new ResponseEntity<Order>(order, HttpStatus.OK);	
 	
 	}
